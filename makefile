@@ -39,10 +39,10 @@ dir:
 	mkdir -p bin build doc
 
 run:
-	$(BIN_DIR)/$(PROG)
+	$(BIN_DIR)/$(PROG) -a data/valoresArvore.txt -i data/comandos.txt
 
 clean: dir
-	$(RM) $(BIN_DIR)/$(PROG)
+	$(RM) $(BIN_DIR)/*
 	$(RM) $(OBJ_DIR)/*.o
 	$(RM) $(DOC_DIR)/*
 
