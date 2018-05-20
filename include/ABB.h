@@ -20,8 +20,8 @@
 #include <string>
 #endif
 
-#ifndef _GLIBCXX_STACK
-#include <stack>
+#ifndef _GLIBCXX_QUEUE
+#include <queue>
 #endif
 
 typedef int DataType;
@@ -116,14 +116,6 @@ class ABB {
      * @return int Número de nós.
      */
     int getSize();
-    /**
-     * @brief Percorre a árvore em ordem simetrica adicionando o valor do nó
-     *        para a string indicada.
-     *
-     * @param target Nó que será adicionado a string.
-     * @param result String onde o nó será adicionado.
-     */
-    void inOrderString(Node* target, std::string* result);
     /**
      * @brief Busca o Nó que contém o conteúdo indicado
      *

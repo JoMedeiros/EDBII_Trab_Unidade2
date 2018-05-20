@@ -184,17 +184,19 @@ bool ABB::ehCompleta() { return false; }
 
 std::string ABB::toString() {
     std::string result;
-    inOrderString(root, &result);
-    return "{ " + result + "}";
-}
-
-void ABB::inOrderString(Node* target, std::string* result) {
-    if (target->left != nullptr) {
-        inOrderString(target->left, result);
+    std::queue<Node*> nodes;
+    Node* node = root;
+    nodes.push(node);
+    while (!nodes.empty()) {
+        node = nodes.front();
+        nodes.pop();
+        result += std::to_string(node->data) + " ";
+        if (node->left != nullptr) {
+            nodes.push(node->left);
+        }
+        if (node->right != nullptr) {
+            nodes.push(node->right);
+        }
     }
-    *result += std::to_string(target->data) + " ";
-    if (target->right != nullptr) {
-        inOrderString(target->right, result);
-    }
+    return result;
 }
-
