@@ -57,16 +57,17 @@ struct Node {
      * @brief Constroi um novo objeto Node.
      *
      * @param value Valor a ser guardado pelo Node.
-     * @param l
-     * @param r
+     * @param l Nó a esquerda deste.
+     * @param r Nó a direita deste.
      */
     explicit Node(DataType value = DataType(), Node* l = nullptr,
                   Node* r = nullptr);
     /**
-     * @brief
+     * @brief Conta o numero de nós nas subárvores a esquerda e a direita do nó
+     * indicado.
      *
-     * @param n
-     * @return int
+     * @param n Nó indicado.
+     * @return int numero de descendentes do nó indicado.
      */
     int countChildren(Node* n);
 };
@@ -87,28 +88,111 @@ class ABB {
 
    public:
     /**
-     * @brief Constrói uma árvore binária de busca vazia (com nó raiz nulo).
+     * @brief Constrói uma árvore binária de busca a partir de um nó.
      *
-     * @param r
+     * @param r Nó que será usado como raiz.
      */
     explicit ABB(Node* r = nullptr);
+    /**
+     * @brief Destroi a árvore binária de busca
+     */
     ~ABB();
-
+    /**
+     * @brief Elimina recursivamente os nós a partir do nó indicado,
+     * incluindo-o.
+     *
+     * @param node Nó por onde a eliminação irá ter inicio.
+     */
     void recursiveErase(Node* node);
+    /**
+     * @brief Recupera o Nó raiz da árvore.
+     *
+     * @return Node* O nó raiz.
+     */
     Node* getRoot();
+    /**
+     * @brief Retorna o número de nós presentes nesta árvore.
+     *
+     * @return int Número de nós.
+     */
     int getSize();
-
+    /**
+     * @brief Percorre a árvore em ordem simetrica adicionando o valor do nó
+     *        para a string indicada.
+     *
+     * @param target Nó que será adicionado a string.
+     * @param result String onde o nó será adicionado.
+     */
     void inOrderString(Node* target, std::string* result);
-
+    /**
+     * @brief Busca o Nó que contém o conteúdo indicado
+     *
+     * @param target Conteúdo a ser buscado.
+     * @return Node* Nó que possui o conteúdo buscado.
+     * @return nullptr Caso o nó não seja encontrado.
+     */
     Node* search(const DataType target);
+    /**
+     * @brief Insere um novo nó com o conteúdo indicado na árvore.
+     *
+     * @param target Conteúdo a ser inserido.
+     * @return true Caso seja inserido com sucesso.
+     * @return false Caso não seja possível inserir. (Elemento repetido)
+     */
     bool insert(const DataType target);
+    /**
+     * @brief Remove o nó com o conteúdo indicado desta árvore.
+     *
+     * @param target Conteúdo a ser removido.
+     * @return true Caso seja removido com sucesso.
+     * @return false Caso não seja possível remover.
+     */
     bool remove(const DataType target);
-
+    /**
+     * @brief Retorna o n-ésimo elemento (contando a partir de 1) do percurso
+     *        em ordem (ordem simétrica) da ABB.
+     *
+     * @param n Posição do elemento a ser retornado.
+     * @return int Elemento da posição indicada.
+     */
     int enesimoElemento(const int n);
+    /**
+     * @brief Retorna a posição ocupada pelo elemento x em um percurso em ordem
+     *        simétrica na ABB (contando a partir de 1).
+     *
+     * @param x Elemento o qual a posição será retornada.
+     * @return int Posição do elemento indicado.
+     */
     int posicao(const int x);
+    /**
+     * @brief retorna o elemento que contém a mediana da ABB. Se a ABB possuir
+     * um número par de elementos, retorne o menor dentre os dois elementos
+     * medianos.
+     *
+     * @return int Elemento que ocupa a mediana da árvore.
+     */
     int mediana();
+    /**
+     * @brief Indica se a árvore é uma árvore cheia.
+     *
+     * @return true
+     * @return false
+     */
     bool ehCheia();
+    /**
+     * @brief Indica se a árvore é uma árvore completa.
+     *
+     *
+     * @return true
+     * @return false
+     */
     bool ehCompleta();
+    /**
+     * @brief retorna uma String que contém a sequência de visitação
+     *        (percorrimento) da ABB por nível.
+     *
+     * @return std::string Resultado do percorrimento por nível.
+     */
     std::string toString();
 };
 
