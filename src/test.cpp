@@ -20,11 +20,16 @@ int main(int argc, char const* argv[]) {
     std::cout << "Ola árvore binária de busca! Você gosta de Raça Negra?\n";
     std::cout << "Iniciando Testes:" << std::endl;
 
-    ABB* plantinha = new ABB();
-    Node* root = plantinha->getRoot();
+    ABB* abb = new ABB();
+    Node* root = abb->getRoot();
     assert(root == nullptr);
-
-    Node* node = new Node();
-
+    std::cout << "Passou no do construtor vazio!" << std::endl;
+    abb->insert(8);
+    assert(abb->getSize() == 1);
+    std::cout << "Passou no inserir numa abb vazia!" << std::endl;
+    abb->insert(4);
+    assert(abb->getSize() == 2);
+    std::cout << "Passou no inserir numa abb com um elemento!" << std::endl;
+    std::cout << abb->toString() << std::endl;
     return 0;
 }

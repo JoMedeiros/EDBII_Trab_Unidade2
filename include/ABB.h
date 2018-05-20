@@ -25,11 +25,12 @@
 #endif
 
 typedef int DataType;
+
 /**
  * @brief Estrutura Node para a Árvore Binária de Busca Extendida.
  */
 struct Node {
- public:
+   public:
     /**
      * Nó imediatamente a esquerda deste.
      */
@@ -51,7 +52,7 @@ struct Node {
      */
     DataType data;
 
- public:
+   public:
     /**
      * @brief Constroi um novo objeto Node.
      *
@@ -74,7 +75,7 @@ struct Node {
  * @brief Classe Árvore Binária de Busca Extendida.
  */
 class ABB {
- private:
+   private:
     /**
      * Nó raiz da árvore.
      */
@@ -84,7 +85,7 @@ class ABB {
      */
     int size;
 
- public:
+   public:
     /**
      * @brief Constrói uma árvore binária de busca vazia (com nó raiz nulo).
      *
@@ -95,6 +96,9 @@ class ABB {
 
     void recursiveErase(Node* node);
     Node* getRoot();
+    int getSize();
+
+    void inOrderString(Node* target, std::string* result);
 
     Node* search(const DataType target);
     bool insert(const DataType target);

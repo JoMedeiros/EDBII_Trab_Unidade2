@@ -52,7 +52,7 @@ void ABB::recursiveErase(Node* node) {
 }
 
 Node* ABB::getRoot() { return root; }
-
+int ABB::getSize() { return size; }
 /**
  * Search normal.
  */
@@ -182,4 +182,19 @@ bool ABB::ehCheia() { return false; }
 
 bool ABB::ehCompleta() { return false; }
 
-std::string ABB::toString() { return ""; }
+std::string ABB::toString() {
+    std::string result;
+    inOrderString(root, &result);
+    return "{ " + result + "}";
+}
+
+void ABB::inOrderString(Node* target, std::string* result) {
+    if (target->left != nullptr) {
+        inOrderString(target->left, result);
+    }
+    *result += std::to_string(target->data) + " ";
+    if (target->right != nullptr) {
+        inOrderString(target->right, result);
+    }
+}
+
