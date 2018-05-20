@@ -14,7 +14,7 @@ DOC_DIR=./doc
 TEST_DIR=./test
 
 # Alvos
-.PHONY: $(PROG) all dir run clean
+.PHONY: $(PROG) all dir run clean doxy valgrindSimple valgrindFull lintComplete lint
 
 all: dir $(PROG)
 
@@ -36,7 +36,7 @@ $(OBJ_DIR)/ABB.o: $(SRC_DIR)/ABB.cpp
 	$(CC) -c $(CPPFLAGS) -I$(INC_DIR) -o $@ $<
 
 dir:
-	mkdir -p bin build
+	mkdir -p bin build doc
 
 run:
 	$(BIN_DIR)/$(PROG)
@@ -44,3 +44,20 @@ run:
 clean: dir
 	$(RM) $(BIN_DIR)/$(PROG)
 	$(RM) $(OBJ_DIR)/*.o
+	$(RM) $(DOC_DIR)/*
+
+doxy:
+	$(RM) $(DOC_DIR)/*
+	doxygen Doxyfile
+
+valgrindSimple:
+	valgrind -v --leak-check=full --show-reachable=yes $(BIN_DIR)/$(PROG)
+
+valgrindFull:
+	valgrind -v --leak-check=full --show-reachable=yes --track-origins=yes $(BIN_DIR)/$(PROG)
+
+lintComplete:
+	python2 cpplint.py --extensions=h, hpp, cpp, inl $(t)
+
+lint:
+	python2 cpplint.py --filter=-runtime/references,-whitespace/line_length --extensions=h, hpp, cpp, inl $(t)

@@ -1,16 +1,23 @@
+// Copyright 2018
+
+/**
+ * @file   main.cpp
+ * @brief  Arquivo main para leitura dos arquivos e utilização da Árvore Binária
+ * 		   de Busca Extendida
+ *
+ * @author Gleydvan
+ * @author JohnVithor
+ * @author JoMedeiros
+ *
+ * @since  20/05/2018
+ * @date   20/05/2018
+ */
+
 #include <iostream>
-#include <cassert>
+
 #include "ABB.h"
 
-using namespace std;
-
-int main(int argc, char const *argv[])
-{
-	cout << "Ola árvore binária de busca! Você gosta de Raça Negra?\n";
-
-	ABB *plantinha = new ABB();
-
-	assert(plantinha->getRaiz() == nullptr);
-
-	return 0;
+int main(int argc, char const *argv[]) {
+  ABB *plantinha = new ABB();
+  return 0;
 }
