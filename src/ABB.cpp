@@ -10,12 +10,13 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   20/05/2018
+ * @date   21/05/2018
  */
 
 #include "ABB.h"
 
-Node::Node(DataType value, Node* l, Node* r) : left(l), right(r), data(value) {
+Node::Node(DataType value, Node* p, Node* l, Node* r)
+    : parent(p), left(l), right(r), data(value) {
     if (l == nullptr) {
         l_cnt = countChildren(l) + 1;
     } else {
@@ -47,6 +48,7 @@ void ABB::recursiveErase(Node* node) {
         node->right = nullptr;
         recursiveErase(left);
         recursiveErase(right);
+        node->parent = nullptr;
         delete node;
     }
 }
@@ -72,6 +74,19 @@ Node* ABB::search(const DataType target) {
     }
     return nullptr;
 }
+
+void ABB::atualizaCounts(Node* node) {
+    if (node != root) {
+        if (node == node->parent->right) {
+            ++node->parent->r_cnt;
+        }
+        if (node == node->parent->left) {
+            ++node->parent->l_cnt;
+        }
+        atualizaCounts(node->parent);
+    }
+}
+
 /**
  * Insert Padrão... Segundo o PDF eu acho que não é possivel usar ele.
  */
@@ -90,14 +105,16 @@ bool ABB::insert(const DataType target) {
         }
         if (data > target) {
             if (current->left == nullptr) {
-                current->left = new Node(target);
+                current->left = new Node(target, current);
+                atualizaCounts(current->left);
                 ++size;
                 return true;
             }
             current = current->left;
         } else {
             if (current->right == nullptr) {
-                current->right = new Node(target);
+                current->right = new Node(target, current);
+                atualizaCounts(current->right);
                 ++size;
                 return true;
             }
@@ -141,8 +158,8 @@ bool ABB::remove(const DataType target) {
 int ABB::enesimoElemento(const int n) {
     int nodes = 0;
     Node* current = root;
-    while (current == nullptr) {
-        nodes = current->l_cnt + 1;
+    while (current != nullptr) {
+        nodes += current->l_cnt + 1;
         if (nodes == n) {
             return current->data;
         }

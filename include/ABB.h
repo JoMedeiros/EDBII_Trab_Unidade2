@@ -10,7 +10,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   20/05/2018
+ * @date   21/05/2018
  */
 
 #ifndef INCLUDE_ABB_H_
@@ -31,6 +31,10 @@ typedef int DataType;
  */
 struct Node {
    public:
+    /**
+     * Nó imediatamente acima deste.
+     */
+    Node* parent;
     /**
      * Nó imediatamente a esquerda deste.
      */
@@ -57,11 +61,12 @@ struct Node {
      * @brief Constroi um novo objeto Node.
      *
      * @param value Valor a ser guardado pelo Node.
+     * @param p Nó acima deste.
      * @param l Nó a esquerda deste.
      * @param r Nó a direita deste.
      */
-    explicit Node(DataType value = DataType(), Node* l = nullptr,
-                  Node* r = nullptr);
+    explicit Node(DataType value = DataType(), Node* p = nullptr,
+                  Node* l = nullptr, Node* r = nullptr);
     /**
      * @brief Conta o numero de nós nas subárvores a esquerda e a direita do nó
      * indicado.
@@ -124,6 +129,14 @@ class ABB {
      * @return nullptr Caso o nó não seja encontrado.
      */
     Node* search(const DataType target);
+
+    /**
+     * @brief Atualiza a contagem de filhos a esquerda e a direita de todos os
+     *        nós entre o nó indicado e a raiz.
+     *
+     * @param node Nó de inicio.
+     */
+    void atualizaCounts(Node* node);
     /**
      * @brief Insere um novo nó com o conteúdo indicado na árvore.
      *
