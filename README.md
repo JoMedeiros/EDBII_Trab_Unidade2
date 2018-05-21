@@ -14,15 +14,15 @@ A binary search tree is a data structure in which the key in each node in the le
 #### Funcionalidades (lista TODO)
 
 - [ ] percurso simétrico
-- [ ] busca
-- [ ] inserir
+- [x] busca
+- [x] inserir (usa busca)
 - [ ] remover
 - [ ] enésimo elemento
 - [ ] acessar posição
 - [ ] mediana
 - [ ] é cheia (booleano)
 - [ ] é completa (booleano)
-- [ ] toString por nível
+- [x] toString por nível
 
 #### Opcionais/Extras
 
