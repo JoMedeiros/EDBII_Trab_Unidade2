@@ -146,6 +146,13 @@ class ABB {
      */
     bool insert(const DataType target);
     /**
+     * @brief Substitui o segundo nó pelo primeiro.
+     *
+     * @param first Nó a ser substituido.
+     * @param second Nó a substituir.
+     */
+    void substituir(Node* first, Node* second);
+    /**
      * @brief Remove o nó com o conteúdo indicado desta árvore.
      *
      * @param target Conteúdo a ser removido.
@@ -199,6 +206,20 @@ class ABB {
      * @return std::string Resultado do percorrimento por nível.
      */
     std::string toString();
+    /**
+     * @brief
+     *
+     * @param node
+     * @return Node*
+     */
+    Node* minimum(Node* node = nullptr);
+    /**
+     * @brief
+     *
+     * @param node
+     * @return Node*
+     */
+    Node* maximum(Node* node = nullptr);
 };
 
 #endif  // INCLUDE_ABB_H_

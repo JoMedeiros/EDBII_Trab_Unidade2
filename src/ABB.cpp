@@ -54,7 +54,9 @@ void ABB::recursiveErase(Node* node) {
 }
 
 Node* ABB::getRoot() { return root; }
+
 int ABB::getSize() { return size; }
+
 /**
  * Search normal.
  */
@@ -124,37 +126,90 @@ bool ABB::insert(const DataType target) {
     return false;
 }
 
+void ABB::substituir(Node* first, Node* second) {
+    if (first->parent != nullptr) {
+        if (first == first->parent->left) {
+            first->parent->left = second;
+        } else {
+            first->parent->right = second;
+        }
+        if (second != nullptr) {
+            second->parent = first->parent;
+        }
+    }
+
+    Node temp = *second;
+    second->left = first->left;
+    second->right = first->right;
+
+    first->parent = temp.parent;
+    first->left = temp.left;
+    first->right = temp.right;
+
+    if (first->parent == first) {
+        first->parent = second;
+    }
+    if (second->parent == second) {
+        second->parent = first;
+    }
+    if (second->left == second) {
+        second->left = first;
+    }
+    if (second->right == second) {
+        second->right = first;
+    }
+    if (root == first) {
+        second->parent = nullptr;
+        root = second;
+    }
+}
+
 bool ABB::remove(const DataType target) {
     Node* current = this->root;
-    Node* before = current;
     DataType data = DataType();
     while (current != nullptr) {
         data = current->data;
         if (data == target) {
             // Nenhum filho
             if (current->left == nullptr && current->right == nullptr) {
-                if (before->left == current) {
-                    before->left = nullptr;
-                } else if (before->right == current) {
-                    before->right = nullptr;
+                if (current->parent->left == current) {
+                    current->parent->left = nullptr;
+                } else if (current->parent->right == current) {
+                    current->parent->right = nullptr;
                 }
                 delete current;
                 --size;
                 return true;
             }
             // Um único filho
-            if (false) {
-                return false;
+            if (current->left == nullptr) {
+                substituir(current, current->right);
+                current->parent = nullptr;
+                current->left = nullptr;
+                current->right = nullptr;
+                delete current;
+                return true;
+            }
+            if (current->right == nullptr) {
+                substituir(current, current->left);
+                current->parent = nullptr;
+                current->left = nullptr;
+                current->right = nullptr;
+                delete current;
+                return true;
             }
             // Dois filhos
-            if (false) {
-                return false;
-            }
+            Node* smallest = minimum(current->right);
+            substituir(current, smallest);
+            continue;
         }
     }
     return false;
 }
 
+/**
+ * Ainda utilizo a estratégia de busca
+ */
 int ABB::enesimoElemento(const int n) {
     int nodes = 0;
     Node* current = root;
@@ -173,6 +228,9 @@ int ABB::enesimoElemento(const int n) {
     return 0;
 }
 
+/**
+ * Ainda utilizo a estratégia de busca
+ */
 int ABB::posicao(const int x) {
     int nodes = 0;
     Node* current = this->root;
@@ -199,6 +257,10 @@ bool ABB::ehCheia() { return false; }
 
 bool ABB::ehCompleta() { return false; }
 
+/**
+ * Utiliza uma std::queue, talvez seja possivel fazer esse método sem
+ * utiliza-la.
+ */
 std::string ABB::toString() {
     std::string result;
     std::queue<Node*> nodes;
@@ -209,11 +271,39 @@ std::string ABB::toString() {
         nodes.pop();
         result += std::to_string(node->data) + " ";
         if (node->left != nullptr) {
+            // result += "left:" + std::to_string(node->left->data) + " ";
             nodes.push(node->left);
         }
         if (node->right != nullptr) {
+            // result += "right:" + std::to_string(node->right->data) + " ";
             nodes.push(node->right);
         }
     }
-    return result;
+    return "{ " + result + "}";
+}
+
+Node* ABB::minimum(Node* node) {
+    Node* step = node;
+    if (node == nullptr) {
+        step = root;
+    }
+    Node* smallest = step;
+    while (step != nullptr) {
+        smallest = step;
+        step = step->left;
+    }
+    return smallest;
+}
+
+Node* ABB::maximum(Node* node) {
+    Node* step = node;
+    if (node == nullptr) {
+        step = root;
+    }
+    Node* biggest = step;
+    while (step != nullptr) {
+        biggest = step;
+        step = step->right;
+    }
+    return biggest;
 }

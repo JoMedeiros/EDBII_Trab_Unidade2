@@ -24,6 +24,7 @@ int main(int argc, char const* argv[]) {
     Node* root = abb->getRoot();
     assert(root == nullptr);
     std::cout << "Passou no do construtor vazio!" << std::endl;
+    // insert(int target)
     {
         abb->insert(8);
         int size = abb->getSize();
@@ -36,6 +37,7 @@ int main(int argc, char const* argv[]) {
         assert(size == 2);
         std::cout << "Passou no inserir numa abb com um elemento!" << std::endl;
     }
+    // enesimoElemento(int n)
     {
         abb->insert(2);
         int resultado = abb->enesimoElemento(1);
@@ -50,6 +52,7 @@ int main(int argc, char const* argv[]) {
         std::cout << "Passou no enesimoElemento do ultimo elemento!"
                   << std::endl;
     }
+    // getSize() e atualizaCounts(Node* node)
     {
         int size = abb->getSize();
         Node* root = abb->getRoot();
@@ -58,10 +61,25 @@ int main(int argc, char const* argv[]) {
         std::cout << "Passou no size igual a soma dos filhos mais 1!"
                   << std::endl;
     }
+    // tostring()
     {
         std::string porNivel = abb->toString();
-        assert(porNivel.compare("{ 8 4 12 2 }"));
+        std::cout << "Resultado: " << porNivel << std::endl;
+        std::cout << "Esperado: "
+                  << "{ 8 4 12 2 }" << std::endl;
+        assert(porNivel.compare("{ 8 4 12 2 }") == 0);
         std::cout << "Passou no toString por nível!" << std::endl;
+    }
+    // remove(int n)
+    {
+        bool resultado = abb->remove(8);
+        assert(resultado == true);
+        std::string porNivel = abb->toString();
+        std::cout << "Resultado: " << porNivel << std::endl;
+        std::cout << "Esperado: "
+                  << "{ 12 4 2 }" << std::endl;
+        assert(porNivel.compare("{ 12 4 2 }") == 0);
+        std::cout << "Passou no remove da raiz!" << std::endl;
     }
     return 0;
 }
