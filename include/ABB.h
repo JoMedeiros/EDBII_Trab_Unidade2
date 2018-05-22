@@ -10,7 +10,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   21/05/2018
+ * @date   22/05/2018
  */
 
 #ifndef INCLUDE_ABB_H_
@@ -24,10 +24,14 @@
 #include <queue>
 #endif
 
+#ifndef _GLIBCXX_MATH
+#include <cmath>
+#endif
+
 typedef int DataType;
 
 /**
- * @brief Estrutura Node para a Árvore Binária de Busca Extendida.
+ * @brief Estrutura Node para a Árvore Binária de Busca Estendida.
  */
 struct Node {
    public:
@@ -65,8 +69,8 @@ struct Node {
      * @param l Nó a esquerda deste.
      * @param r Nó a direita deste.
      */
-    explicit Node(DataType value = DataType(), Node* p = nullptr,
-                  Node* l = nullptr, Node* r = nullptr);
+    Node(DataType value = DataType(), Node* p = nullptr, Node* l = nullptr,
+         Node* r = nullptr);
     /**
      * @brief Conta o numero de nós nas subárvores a esquerda e a direita do nó
      * indicado.
@@ -78,7 +82,7 @@ struct Node {
 };
 
 /**
- * @brief Classe Árvore Binária de Busca Extendida.
+ * @brief Classe Árvore Binária de Busca Estendida.
  */
 class ABB {
    private:
@@ -90,6 +94,10 @@ class ABB {
      * Número de nós na árvore.
      */
     int size;
+    /**
+     * Altura da árvore.
+     */
+    int height;
 
    public:
     /**
@@ -121,6 +129,12 @@ class ABB {
      * @return int Número de nós.
      */
     int getSize();
+    /**
+     * @brief Retorna a altura da árvore.
+     *
+     * @return int Altura da árvore.
+     */
+    int getHeight();
     /**
      * @brief Busca o Nó que contém o conteúdo indicado
      *

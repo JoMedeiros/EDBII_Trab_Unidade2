@@ -10,7 +10,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   21/05/2018
+ * @date   22/05/2018
  */
 
 #include "ABB.h"
@@ -57,6 +57,8 @@ Node* ABB::getRoot() { return root; }
 
 int ABB::getSize() { return size; }
 
+int ABB::getHeight() { return height; }
+
 /**
  * Search normal.
  */
@@ -98,18 +100,24 @@ bool ABB::insert(const DataType target) {
     if (this->root == nullptr) {
         this->root = new Node(target);
         ++size;
+        ++height;
         return true;
     }
+    int count = 1;
     while (current != nullptr) {
         data = current->data;
         if (data == target) {
             return false;
         }
+        ++count;
         if (data > target) {
             if (current->left == nullptr) {
                 current->left = new Node(target, current);
                 atualizaCounts(current->left);
                 ++size;
+                if (count > height) {
+                    ++height;
+                }
                 return true;
             }
             current = current->left;
@@ -118,6 +126,9 @@ bool ABB::insert(const DataType target) {
                 current->right = new Node(target, current);
                 atualizaCounts(current->right);
                 ++size;
+                if (count > height) {
+                    ++height;
+                }
                 return true;
             }
             current = current->right;
@@ -291,9 +302,12 @@ int ABB::mediana() {
     }
 }
 
-bool ABB::ehCheia() { return false; }
+bool ABB::ehCheia() { return size == std::pow(2, height) - 1; }
 
-bool ABB::ehCompleta() { return false; }
+bool ABB::ehCompleta() {
+    size <= std::pow(2, height) - 1 && size > std::pow(2, height - 1);
+    return size == std::pow(2, height) - 1;
+}
 
 /**
  * Utiliza uma std::queue, talvez seja possivel fazer esse método sem

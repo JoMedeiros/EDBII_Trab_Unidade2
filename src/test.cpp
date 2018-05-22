@@ -9,7 +9,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   21/05/2018
+ * @date   22/05/2018
  */
 
 #include <cassert>
@@ -77,6 +77,26 @@ int main(int argc, char const* argv[]) {
             abb->insert(array[i]);
         }
         // { 8 4 12 2 6 10 14 1 3 5 7 9 11 13 15 }
+    }
+    {
+        int resultado = abb->getHeight();
+        assert(resultado == 4);
+        std::cout << "Resultado: " << resultado << std::endl;
+        std::cout << "Passou no getHeight árvore cheia!" << std::endl;
+    }
+
+    // enesimoElemento(int n)
+    {
+        int resultado = abb->enesimoElemento(14);
+        std::cout << "Resultado: " << resultado << std::endl;
+        assert(resultado == 14);
+        std::cout << "Passou no enesimoElemento com um numero no meio!"
+                  << std::endl;
+    }
+    {
+        bool resultado = abb->ehCheia();
+        assert(resultado == true);
+        std::cout << "Passou no ehCheia!" << std::endl;
     }
     // remove(int n)
     {

@@ -30,6 +30,7 @@
         "fstream": "cpp",
         "sstream": "cpp",
         "utility": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "queue": "cpp"
     }
 }
