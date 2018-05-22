@@ -305,7 +305,7 @@ int ABB::mediana() {
 bool ABB::ehCheia() { return size == std::pow(2, height) - 1; }
 
 bool ABB::ehCompleta() {
-    size <= std::pow(2, height) - 1 && size > std::pow(2, height - 1);
+    size <= std::pow(2, height) - 1 && size >= std::pow(2, height - 1);
     return size == std::pow(2, height) - 1;
 }
 
