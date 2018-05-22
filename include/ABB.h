@@ -132,7 +132,7 @@ class ABB {
 
     /**
      * @brief Atualiza a contagem de filhos a esquerda e a direita de todos os
-     *        nós entre o nó indicado e a raiz.
+     *        nós entre o nó indicado e a raiz. Incrementando em 1.
      *
      * @param node Nó de inicio.
      */

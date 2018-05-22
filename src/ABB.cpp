@@ -126,6 +126,9 @@ bool ABB::insert(const DataType target) {
     return false;
 }
 
+/**
+ * Me pergunto se é realmente necessário realizar tantas verificações...
+ */
 void ABB::substituir(Node* first, Node* second) {
     if (first->parent != nullptr) {
         if (first == first->parent->left) {
@@ -133,18 +136,27 @@ void ABB::substituir(Node* first, Node* second) {
         } else {
             first->parent->right = second;
         }
-        if (second != nullptr) {
-            second->parent = first->parent;
-        }
+    }
+    if (second == second->parent->left) {
+        second->parent->left = first;
+    } else {
+        second->parent->right = first;
     }
 
     Node temp = *second;
+    // Provavelmente é melhor realizar uma sobrecarga ou criar um método que
+    // faça essas atribuições e as verificações
+    second->parent = first->parent;
     second->left = first->left;
     second->right = first->right;
+    second->l_cnt = first->l_cnt;
+    second->r_cnt = first->r_cnt;
 
     first->parent = temp.parent;
     first->left = temp.left;
     first->right = temp.right;
+    first->l_cnt = temp.l_cnt;
+    first->r_cnt = temp.r_cnt;
 
     if (first->parent == first) {
         first->parent = second;
@@ -163,6 +175,10 @@ void ABB::substituir(Node* first, Node* second) {
         root = second;
     }
 }
+/**
+ * Preciso setar os ponteiros do nó a ser removido para nullptr antes de chamar
+ * o delete? Ou só o delete já é o suficiente?
+ */
 
 bool ABB::remove(const DataType target) {
     Node* current = this->root;
@@ -184,6 +200,11 @@ bool ABB::remove(const DataType target) {
             // Um único filho
             if (current->left == nullptr) {
                 substituir(current, current->right);
+                if (current->parent->left == current) {
+                    current->parent->left = nullptr;
+                } else if (current->parent->right == current) {
+                    current->parent->right = nullptr;
+                }
                 current->parent = nullptr;
                 current->left = nullptr;
                 current->right = nullptr;
@@ -192,6 +213,11 @@ bool ABB::remove(const DataType target) {
             }
             if (current->right == nullptr) {
                 substituir(current, current->left);
+                if (current->parent->left == current) {
+                    current->parent->left = nullptr;
+                } else if (current->parent->right == current) {
+                    current->parent->right = nullptr;
+                }
                 current->parent = nullptr;
                 current->left = nullptr;
                 current->right = nullptr;
@@ -202,6 +228,10 @@ bool ABB::remove(const DataType target) {
             Node* smallest = minimum(current->right);
             substituir(current, smallest);
             continue;
+        } else if (data < target) {
+            current = current->right;
+        } else {
+            current = current->left;
         }
     }
     return false;
@@ -250,8 +280,16 @@ int ABB::posicao(const int x) {
     }
     return 0;
 }
-
-int ABB::mediana() { return 0; }
+/**
+ * Parece simples demais... deve estar errado...
+ */
+int ABB::mediana() {
+    if (size % 2 == 0) {
+        return enesimoElemento(size / 2);
+    } else {
+        return enesimoElemento((size / 2) + 1);
+    }
+}
 
 bool ABB::ehCheia() { return false; }
 
@@ -271,11 +309,9 @@ std::string ABB::toString() {
         nodes.pop();
         result += std::to_string(node->data) + " ";
         if (node->left != nullptr) {
-            // result += "left:" + std::to_string(node->left->data) + " ";
             nodes.push(node->left);
         }
         if (node->right != nullptr) {
-            // result += "right:" + std::to_string(node->right->data) + " ";
             nodes.push(node->right);
         }
     }
