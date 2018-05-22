@@ -99,6 +99,16 @@ int main(int argc, char const* argv[]) {
         assert(resultado == true);
         std::cout << "Passou no ehCheia!" << std::endl;
     }
+    // ehCompleta()
+    {
+        ABB* abb2 = new ABB();
+        abb2->insert(2); abb2->insert(3); abb2->insert(4); // Arvore ziguezague
+        bool resultado = abb2->ehCompleta();
+        assert(resultado == false); // Teste negativo
+        resultado = abb->ehCompleta();
+        assert(resultado == true); // Teste positivo
+        std::cout << "Passou no não ehCompleta!" << std::endl;
+    }
     // remove(int n)
     {
         bool resultado = abb->remove(15);
@@ -142,6 +152,6 @@ int main(int argc, char const* argv[]) {
         assert(rootData == 9);
         std::cout << "Passou no remove da raiz!" << std::endl;
     }
-
+    
     return 0;
 }

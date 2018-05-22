@@ -118,7 +118,8 @@ bool ABB::insert(const DataType target) {
                 ++size;
                 if (count > height) {
                     ++height;
-                    levelCount.push_back(1);
+                    // Não sei porque mas trocando 1 por 0 funciona
+                    levelCount.push_back(0);
                 }
                 // Atualiza o número de nós no nível inserido
                 ++levelCount[count-1];
@@ -132,7 +133,8 @@ bool ABB::insert(const DataType target) {
                 ++size;
                 if (count > height) {
                     ++height;
-                    levelCount.push_back(1);
+                    // Não sei porque mas trocando 1 por 0 funciona
+                    levelCount.push_back(0);
                 }
                 // Atualiza o número de nós no nível inserido
                 ++levelCount[count-1];
@@ -313,11 +315,10 @@ bool ABB::ehCheia() { return size == std::pow(2, height) - 1; }
 
 bool ABB::ehCompleta() {
     int n = levelCount.size(); // para acessar o vector
-    if (n > 2)
-        // [... , x, y, z] se x = 2^level(x) é cheia
-        return levelCount[n-3] == std::pow(2, n-3); 
-    //size <= std::pow(2, height) - 1 && size >= std::pow(2, height - 1);
-    //return size == std::pow(2, height) - 1;
+    if (n > 2){
+        // [... , x, y] se x = 2^level(x) -> é cheia
+        return levelCount[n-2] == std::pow(2, n-2);
+    }
     return true;
 }
 
