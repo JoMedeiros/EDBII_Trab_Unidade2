@@ -93,6 +93,7 @@ int main(int argc, char const* argv[]) {
         std::cout << "Passou no enesimoElemento com um numero no meio!"
                   << std::endl;
     }
+    // ehCheia()
     {
         bool resultado = abb->ehCheia();
         assert(resultado == true);
