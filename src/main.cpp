@@ -10,7 +10,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   20/05/2018
+ * @date   22/05/2018
  */
 
 #include <fstream>
@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "ABB.h"
+#include "Command.h"
 
 std::pair<std::string, std::string> validateArgs(int argc, char const *argv[]) {
     if (argc != 5) {
@@ -71,19 +72,42 @@ std::vector<int> readValues(const std::string &path) {
     return values;
 }
 
-std::vector<std::string> readCommands(const std::string &path) {
-    std::string line;
-    std::vector<std::string> commands;
-    std::ifstream data;
+std::vector<std::string> parse(std::string target, std::string delimiter) {
+    size_t pos_start = 0;
+    size_t pos_end;
+    size_t delim_len = delimiter.length();
+    std::string token;
+    std::vector<std::string> result;
+    while ((pos_end = target.find(delimiter, pos_start)) != std::string::npos) {
+        token = target.substr(pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        result.push_back(token);
+    }
+    result.push_back(target.substr(pos_start));
+    return result;
+}
 
+std::vector<Command> readCommands(const std::string &path) {
+    std::string line;
+    std::vector<Command> commands;
+    std::ifstream data;
     data.open(path);
     if (!data.is_open()) {
         std::cout << "O arquivo '" << path << "' não pode ser aberto."
                   << std::endl;
         std::exit(-1);
     }
+    std::vector<std::string> parsed;
+    Command *command;
     while (std::getline(data, line)) {
-        commands.push_back(line);
+        parsed = parse(line, " ");
+        if (parsed.size() == 2) {
+            command = new Command(parsed[0], parsed[1]);
+        } else {
+            command = new Command(parsed[0]);
+        }
+
+        commands.push_back(*command);
     }
     data.close();
     return commands;
@@ -92,19 +116,75 @@ std::vector<std::string> readCommands(const std::string &path) {
 int main(int argc, char const *argv[]) {
     auto archives = validateArgs(argc, argv);
     std::vector<int> values = readValues(archives.first);
-    std::vector<std::string> commands = readCommands(archives.second);
-
-    std::cout << "Valores: ";
+    std::vector<Command> commands = readCommands(archives.second);
+    ABB abb;
     for (auto var : values) {
-        std::cout << var << " ";
+        bool ok = abb.insert(var);
+        if (!ok) {
+            std::cout << "Não foi possível inserir o elemento '" << var
+                      << "'\n";
+        }
     }
-    std::cout << std::endl;
-
-    std::cout << "Comandos: ";
+    int resultado;
+    bool sucesso;
     for (auto var : commands) {
-        std::cout << "'" << var << "'" << " ";
+        std::cout << var.getCommand() << " ";
+        if (var.getArg() != -1) {
+            std::cout << var.getArg();
+        }
+        std::cout << ": ";
+        switch (var.getType()) {
+            case (Command::CommandType::CHEIA):
+                if (abb.ehCheia()) {
+                    std::cout << "Sim é Cheia!" << std::endl;
+                } else {
+                    std::cout << "Não é Cheia!" << std::endl;
+                }
+                break;
+            case (Command::CommandType::COMPLETA):
+                if (abb.ehCompleta()) {
+                    std::cout << "Sim é Completa!" << std::endl;
+                } else {
+                    std::cout << "Não é Completa!" << std::endl;
+                }
+                break;
+            case (Command::CommandType::ENESIMO):
+                try {
+                    resultado = abb.enesimoElemento(var.getArg());
+                    std::cout << resultado << std::endl;
+                } catch (std::out_of_range bd) {
+                    std::cout << bd.what() << std::endl;
+                }
+                break;
+            case (Command::CommandType::IMPRIMA):
+                std::cout << abb.toString() << std::endl;
+                break;
+            case (Command::CommandType::MEDIANA):
+                std::cout << abb.mediana() << std::endl;
+                break;
+            case (Command::CommandType::POSICAO):
+                try {
+                    resultado = abb.posicao(var.getArg());
+                    std::cout << resultado << std::endl;
+                } catch (std::out_of_range bd) {
+                    std::cout << bd.what() << std::endl;
+                }
+                break;
+            case (Command::CommandType::REMOVA):
+                sucesso = abb.remove(var.getArg());
+                if (sucesso) {
+                    std::cout << "Elemento " << var.getArg() << " removido!"
+                              << std::endl;
+                } else {
+                    std::cout << "Não foi possível remover o elemento "
+                              << var.getArg() << std::endl;
+                }
+                break;
+            default:
+                std::cout << "O comando '" << var.getCommand()
+                          << " não foi reconhecido!" << std::endl;
+                break;
+        }
     }
-    std::cout << std::endl;
-
     return 0;
 }
