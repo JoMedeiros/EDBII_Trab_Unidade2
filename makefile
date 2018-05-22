@@ -62,6 +62,7 @@ lintComplete:
 lint:
 	python2 cpplint.py --filter=-runtime/references,-whitespace/line_length --extensions=h, hpp, cpp, inl $(t)
 
+test: CPPFLAGS += -g -O0
 test: $(OBJ_DIR)/test.o $(OBJ_DIR)/ABB.o
 	@echo "============="
 	@echo "Linking target $@"

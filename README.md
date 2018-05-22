@@ -15,8 +15,8 @@ A binary search tree is a data structure in which the key in each node in the le
 
 - [ ] percurso simétrico
 - [x] busca
-- [x] inserir (usa busca)
-- [ ] remover
+- [x] inserir (Usa busca)
+- [x] remover (Usa busca)
 - [ ] enésimo elemento
 - [ ] acessar posição
 - [ ] mediana
@@ -29,8 +29,8 @@ A binary search tree is a data structure in which the key in each node in the le
 - [ ] percurso em ordem
 - [ ] percurso em pós ordem
 - [ ] percurso em pré ordem
-- [ ] mínimo
-- [ ] máximo
+- [x] mínimo
+- [x] máximo
 - [ ] predecessor
 - [ ] sucessor
 

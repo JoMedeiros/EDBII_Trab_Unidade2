@@ -10,7 +10,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   20/05/2018
+ * @date   22/05/2018
  */
 
 #ifndef INCLUDE_ABB_H_
@@ -24,13 +24,25 @@
 #include <queue>
 #endif
 
+#ifndef _GLIBCXX_VECTOR
+#include <vector>
+#endif
+
+#ifndef _GLIBCXX_MATH
+#include <cmath>
+#endif
+
 typedef int DataType;
 
 /**
- * @brief Estrutura Node para a Árvore Binária de Busca Extendida.
+ * @brief Estrutura Node para a Árvore Binária de Busca Estendida.
  */
 struct Node {
    public:
+    /**
+     * Nó imediatamente acima deste.
+     */
+    Node* parent;
     /**
      * Nó imediatamente a esquerda deste.
      */
@@ -57,11 +69,12 @@ struct Node {
      * @brief Constroi um novo objeto Node.
      *
      * @param value Valor a ser guardado pelo Node.
+     * @param p Nó acima deste.
      * @param l Nó a esquerda deste.
      * @param r Nó a direita deste.
      */
-    explicit Node(DataType value = DataType(), Node* l = nullptr,
-                  Node* r = nullptr);
+    Node(DataType value = DataType(), Node* p = nullptr, Node* l = nullptr,
+         Node* r = nullptr);
     /**
      * @brief Conta o numero de nós nas subárvores a esquerda e a direita do nó
      * indicado.
@@ -73,10 +86,11 @@ struct Node {
 };
 
 /**
- * @brief Classe Árvore Binária de Busca Extendida.
+ * @brief Classe Árvore Binária de Busca Estendida.
  */
 class ABB {
    private:
+    std::vector<short> levelCount;
     /**
      * Nó raiz da árvore.
      */
@@ -85,6 +99,10 @@ class ABB {
      * Número de nós na árvore.
      */
     int size;
+    /**
+     * Altura da árvore.
+     */
+    int height;
 
    public:
     /**
@@ -117,6 +135,12 @@ class ABB {
      */
     int getSize();
     /**
+     * @brief Retorna a altura da árvore.
+     *
+     * @return int Altura da árvore.
+     */
+    int getHeight();
+    /**
      * @brief Busca o Nó que contém o conteúdo indicado
      *
      * @param target Conteúdo a ser buscado.
@@ -124,6 +148,14 @@ class ABB {
      * @return nullptr Caso o nó não seja encontrado.
      */
     Node* search(const DataType target);
+
+    /**
+     * @brief Atualiza a contagem de filhos a esquerda e a direita de todos os
+     *        nós entre o nó indicado e a raiz. Incrementando em 1.
+     *
+     * @param node Nó de inicio.
+     */
+    void atualizaCounts(Node* node);
     /**
      * @brief Insere um novo nó com o conteúdo indicado na árvore.
      *
@@ -132,6 +164,13 @@ class ABB {
      * @return false Caso não seja possível inserir. (Elemento repetido)
      */
     bool insert(const DataType target);
+    /**
+     * @brief Substitui o segundo nó pelo primeiro.
+     *
+     * @param first Nó a ser substituido.
+     * @param second Nó a substituir.
+     */
+    void substituir(Node* first, Node* second);
     /**
      * @brief Remove o nó com o conteúdo indicado desta árvore.
      *
@@ -186,6 +225,20 @@ class ABB {
      * @return std::string Resultado do percorrimento por nível.
      */
     std::string toString();
+    /**
+     * @brief
+     *
+     * @param node
+     * @return Node*
+     */
+    Node* minimum(Node* node = nullptr);
+    /**
+     * @brief
+     *
+     * @param node
+     * @return Node*
+     */
+    Node* maximum(Node* node = nullptr);
 };
 
 #endif  // INCLUDE_ABB_H_
