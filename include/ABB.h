@@ -24,6 +24,10 @@
 #include <queue>
 #endif
 
+#ifndef _GLIBCXX_VECTOR
+#include <vector>
+#endif
+
 #ifndef _GLIBCXX_MATH
 #include <cmath>
 #endif
@@ -86,6 +90,7 @@ struct Node {
  */
 class ABB {
    private:
+    std::vector<short> levelCount;
     /**
      * Nó raiz da árvore.
      */

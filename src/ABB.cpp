@@ -36,7 +36,7 @@ int Node::countChildren(Node* n) {
     return n->r_cnt + n->l_cnt;
 }
 
-ABB::ABB(Node* r) : root(r), size(0) {}
+ABB::ABB(Node* r) : root(r), size(0) { levelCount.reserve(10);}
 
 ABB::~ABB() { recursiveErase(root); }
 
@@ -101,6 +101,7 @@ bool ABB::insert(const DataType target) {
         this->root = new Node(target);
         ++size;
         ++height;
+        levelCount.push_back(1);
         return true;
     }
     int count = 1;
@@ -117,6 +118,7 @@ bool ABB::insert(const DataType target) {
                 ++size;
                 if (count > height) {
                     ++height;
+                    levelCount.push_back(1);
                 }
                 return true;
             }
@@ -128,6 +130,7 @@ bool ABB::insert(const DataType target) {
                 ++size;
                 if (count > height) {
                     ++height;
+                    levelCount.push_back(1);
                 }
                 return true;
             }
