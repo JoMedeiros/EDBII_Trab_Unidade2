@@ -21,7 +21,7 @@ all: dir $(PROG)
 debug: CPPFLAGS += -g -O0
 debug: $(PROG)
 
-$(PROG): $(OBJ_DIR)/main.o $(OBJ_DIR)/ABB.o
+$(PROG): $(OBJ_DIR)/main.o $(OBJ_DIR)/ABB.o $(OBJ_DIR)/Command.o
 	@echo "============="
 	@echo "Linking target $@"
 	$(CC) $(CPPFLAGS) -I$(INC_DIR) -o $(BIN_DIR)/$@ $^
@@ -33,6 +33,9 @@ $(OBJ_DIR)/main.o: $(SRC_DIR)/main.cpp
 	$(CC) -c $(CPPFLAGS) -I$(INC_DIR) -o $@ $<
 
 $(OBJ_DIR)/ABB.o: $(SRC_DIR)/ABB.cpp
+	$(CC) -c $(CPPFLAGS) -I$(INC_DIR) -o $@ $<
+
+$(OBJ_DIR)/Command.o: $(SRC_DIR)/Command.cpp
 	$(CC) -c $(CPPFLAGS) -I$(INC_DIR) -o $@ $<
 
 dir:

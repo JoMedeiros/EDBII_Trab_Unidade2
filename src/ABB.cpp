@@ -36,7 +36,7 @@ int Node::countChildren(Node* n) {
     return n->r_cnt + n->l_cnt;
 }
 
-ABB::ABB(Node* r) : root(r), size(0) { levelCount.reserve(10);}
+ABB::ABB(Node* r) : root(r), size(0), height(0) { levelCount.reserve(10); }
 
 ABB::~ABB() { recursiveErase(root); }
 
@@ -255,44 +255,46 @@ bool ABB::remove(const DataType target) {
  * Ainda utilizo a estratégia de busca
  */
 int ABB::enesimoElemento(const int n) {
+    int increment = 0;
     int nodes = 0;
     Node* current = root;
     while (current != nullptr) {
-        nodes += current->l_cnt + 1;
-        if (nodes == n) {
+        increment = current->l_cnt + 1;
+        if (nodes + increment == n) {
             return current->data;
         }
-        if (nodes < n) {
+        if (nodes + increment < n) {
+            nodes += increment;
             current = current->right;
         } else {
-            nodes = 0;
             current = current->left;
         }
     }
-    return 0;
+    throw std::out_of_range("Não existe a posição: " + n);
 }
 
 /**
  * Ainda utilizo a estratégia de busca
  */
 int ABB::posicao(const int x) {
+    int increment = 0;
     int nodes = 0;
     Node* current = this->root;
     DataType data = DataType();
     while (current != nullptr) {
-        nodes += current->l_cnt + 1;
+        increment = current->l_cnt + 1;
         data = current->data;
         if (data == x) {
-            return nodes;
+            return nodes + increment;
         }
         if (data < x) {
+            nodes += increment;
             current = current->right;
         } else {
-            nodes = 0;
             current = current->left;
         }
     }
-    return 0;
+    throw std::invalid_argument("Não existe o elemento: " + x);
 }
 /**
  * Parece simples demais... deve estar errado...
@@ -305,8 +307,10 @@ int ABB::mediana() {
     }
 }
 
+// Parece certo...
 bool ABB::ehCheia() { return size == std::pow(2, height) - 1; }
 
+// Falta atualizar esse método, está errado.
 bool ABB::ehCompleta() {
     size <= std::pow(2, height) - 1 && size >= std::pow(2, height - 1);
     return size == std::pow(2, height) - 1;

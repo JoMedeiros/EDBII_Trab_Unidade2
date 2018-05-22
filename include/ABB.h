@@ -32,6 +32,10 @@
 #include <cmath>
 #endif
 
+#ifndef _GLIBCXX_STDEXCEPT
+#include <stdexcept>
+#endif
+
 typedef int DataType;
 
 /**
