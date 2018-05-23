@@ -15,8 +15,8 @@
 
 #include "ABB.h"
 
-Node::Node(DataType value, Node* p, Node* l, Node* r)
-    : parent(p), left(l), right(r), data(value) {
+Node::Node(DataType value, int n, Node* p, Node* l, Node* r)
+    : parent(p), left(l), right(r), data(value), level(n) {
     if (l == nullptr) {
         l_cnt = countChildren(l) + 1;
     } else {
@@ -113,7 +113,7 @@ bool ABB::insert(const DataType target) {
         ++count;
         if (data > target) {
             if (current->left == nullptr) {
-                current->left = new Node(target, current);
+                current->left = new Node(target, count, current);
                 atualizaCounts(current->left, 1);
                 ++size;
                 if (count > height) {
@@ -128,7 +128,7 @@ bool ABB::insert(const DataType target) {
             current = current->left;
         } else {
             if (current->right == nullptr) {
-                current->right = new Node(target, current);
+                current->right = new Node(target, count, current);
                 atualizaCounts(current->right, 1);
                 ++size;
                 if (count > height) {
@@ -161,12 +161,10 @@ void ABB::substituir(Node* first, Node* second) {
  */
 
 bool ABB::remove(const DataType target) {
-    int count = 0;
     Node* current = this->root;
     DataType data = DataType();
     while (current != nullptr) {
         data = current->data;
-        ++count;
         if (data == target) {
             // Nenhum filho
             if (current->left == nullptr && current->right == nullptr) {
@@ -176,9 +174,12 @@ bool ABB::remove(const DataType target) {
                 } else if (current->parent->right == current) {
                     current->parent->right = nullptr;
                 }
-                delete current;
                 --size;
-                --levelCount[count - 1];
+                --levelCount[current->level - 1];
+                if (levelCount[current->level - 1] == 0) {
+                    levelCount.pop_back();
+                }
+                delete current;
                 return true;
             }
             // Um único filho
@@ -190,9 +191,12 @@ bool ABB::remove(const DataType target) {
                     current->parent->right = current->right;
                 }
                 current->right->parent = current->parent;
-                delete current;
                 --size;
-                --levelCount[count - 1];
+                --levelCount[current->right->level - 1];
+                if (levelCount[current->right->level - 1] == 0) {
+                    levelCount.pop_back();
+                }
+                delete current;
                 return true;
             }
             if (current->right == nullptr) {
@@ -203,9 +207,12 @@ bool ABB::remove(const DataType target) {
                     current->parent->right = current->left;
                 }
                 current->left->parent = current->parent;
-                delete current;
                 --size;
-                --levelCount[count - 1];
+                --levelCount[current->left->level - 1];
+                if (levelCount[current->left->level - 1] == 0) {
+                    levelCount.pop_back();
+                }
+                delete current;
                 return true;
             }
             // Dois filhos
@@ -217,9 +224,12 @@ bool ABB::remove(const DataType target) {
             } else if (smallest->parent->right == smallest) {
                 smallest->parent->right = nullptr;
             }
-            delete smallest;
             --size;
-            --levelCount[count - 1];
+            --levelCount[smallest->level - 1];
+            if (levelCount[smallest->level - 1] == 0) {
+                levelCount.pop_back();
+            }
+            delete smallest;
             return true;
         } else if (data < target) {
             current = current->right;
@@ -294,7 +304,9 @@ bool ABB::ehCompleta() {
     int n = levelCount.size();  // para acessar o vector
     if (n > 2) {
         // [... , x, y] se x = 2^level(x) -> é cheia
-        return levelCount[n - 2] == std::pow(2, n - 2);
+        int a = levelCount[n - 2];
+        int b = std::pow(2, n - 2) - 1;
+        return levelCount[n - 2] >= std::pow(2, n - 2) - 1;
     }
     return true;
 }

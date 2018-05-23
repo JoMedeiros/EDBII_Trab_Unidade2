@@ -67,6 +67,10 @@ struct Node {
      * Conteúdo armazenado neste nó.
      */
     DataType data;
+    /**
+     * Nível do nó na árvore.
+     */
+    int level;
 
    public:
     /**
@@ -77,8 +81,8 @@ struct Node {
      * @param l Nó a esquerda deste.
      * @param r Nó a direita deste.
      */
-    Node(DataType value = DataType(), Node* p = nullptr, Node* l = nullptr,
-         Node* r = nullptr);
+    Node(DataType value = DataType(), int n = 0, Node* p = nullptr,
+         Node* l = nullptr, Node* r = nullptr);
     /**
      * @brief Conta o numero de nós nas subárvores a esquerda e a direita do nó
      * indicado.
