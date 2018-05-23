@@ -9,7 +9,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   22/05/2018
+ * @date   23/05/2018
  */
 
 #include <cassert>
@@ -17,7 +17,6 @@
 
 #include "ABB.h"
 int main(int argc, char const* argv[]) {
-    
     std::cout << "Iniciando Testes:" << std::endl;
 
     ABB* abb = new ABB();
@@ -56,9 +55,8 @@ int main(int argc, char const* argv[]) {
     {
         int resultado = abb->enesimoElemento(4);
         int indice = abb->posicao(resultado);
-        assert (indice == 4);
-        std::cout << "Passou no posicao!"
-                  << std::endl;
+        assert(indice == 4);
+        std::cout << "Passou no posicao!" << std::endl;
     }
     // getSize() e atualizaCounts(Node* node)
     {
@@ -89,16 +87,21 @@ int main(int argc, char const* argv[]) {
     {
         int resultado = abb->getHeight();
         assert(resultado == 4);
-        std::cout << "Resultado: " << resultado << std::endl;
         std::cout << "Passou no getHeight árvore cheia!" << std::endl;
     }
 
     // enesimoElemento(int n)
     {
         int resultado = abb->enesimoElemento(14);
-        std::cout << "Resultado: " << resultado << std::endl;
         assert(resultado == 14);
         std::cout << "Passou no enesimoElemento com um numero no meio!"
+                  << std::endl;
+    }
+    // mediana()
+    {
+        int resultado = abb->mediana();
+        assert(resultado == 8);
+        std::cout << "Passou no mediana!"
                   << std::endl;
     }
     // ehCheia()
@@ -110,11 +113,13 @@ int main(int argc, char const* argv[]) {
     // ehCompleta()
     {
         ABB* abb2 = new ABB();
-        abb2->insert(2); abb2->insert(3); abb2->insert(4); // Arvore ziguezague
+        abb2->insert(2);
+        abb2->insert(3);
+        abb2->insert(4);  // Arvore ziguezague
         bool resultado = abb2->ehCompleta();
-        assert(resultado == false); // Teste negativo
+        assert(resultado == false);  // Teste negativo
         resultado = abb->ehCompleta();
-        assert(resultado == true); // Teste positivo
+        assert(resultado == true);  // Teste positivo
         std::cout << "Passou no não ehCompleta!" << std::endl;
     }
     // remove(int n)
@@ -138,6 +143,13 @@ int main(int argc, char const* argv[]) {
         assert(porNivel.compare("{ 8 4 12 2 6 10 13 1 3 5 7 9 11 }") == 0);
         std::cout << "Passou no remove com um filho!" << std::endl;
     }
+    // mediana()
+    {
+        int resultado = abb->mediana();
+        assert(resultado == 7);
+        std::cout << "Passou no mediana!"
+                  << std::endl;
+    }
     {
         bool resultado = abb->remove(4);
         assert(resultado == true);
@@ -160,6 +172,6 @@ int main(int argc, char const* argv[]) {
         assert(rootData == 9);
         std::cout << "Passou no remove da raiz!" << std::endl;
     }
-    
+
     return 0;
 }

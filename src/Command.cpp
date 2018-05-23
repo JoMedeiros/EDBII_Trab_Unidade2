@@ -9,22 +9,13 @@
  * @author JoMedeiros
  *
  * @since  22/05/2018
- * @date   22/05/2018
+ * @date   23/05/2018
  */
 
 #include "Command.h"
 
 Command::Command() : type(CommandType::INVALIDO), argument(-1) {}
-/*
-        ENESIMO, 1
-        POSICAO,1
-        MEDIANA,
-        CHEIA,
-        COMPLETA,
-        IMPRIMA,
-        REMOVA,1
-        INVALIDO
-*/
+
 Command::Command(std::string command, std::string arg) {
     type = CommandType::INVALIDO;
     str = command;

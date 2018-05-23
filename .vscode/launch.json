@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/ABB",
+            "program": "${workspaceFolder}/bin/test",
             "args": ["-a", "data/valoresArvore.txt", "-i", "data/comandos.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

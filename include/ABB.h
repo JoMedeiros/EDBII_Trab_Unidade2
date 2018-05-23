@@ -158,8 +158,9 @@ class ABB {
      *        nós entre o nó indicado e a raiz. Incrementando em 1.
      *
      * @param node Nó de inicio.
+     * @param int Valor do incremento / decremento.
      */
-    void atualizaCounts(Node* node);
+    void atualizaCounts(Node* node, int value);
     /**
      * @brief Insere um novo nó com o conteúdo indicado na árvore.
      *

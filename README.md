@@ -23,11 +23,11 @@ A árvore de busca suporta várias operações como busca, mínimo, máximo, pre
 
 - [x] percurso simétrico
 - [x] busca
-- [x] inserir (Usa busca)
-- [x] remover (Usa busca)
+- [x] inserir (Usa a ideia de busca)
+- [x] remover (Usa a ideia de busca)
 - [x] enésimo elemento
 - [x] acessar posição
-- [ ] mediana
+- [x] mediana
 - [x] é cheia (booleano)
 - [x] é completa (booleano)
 - [x] toString por nível

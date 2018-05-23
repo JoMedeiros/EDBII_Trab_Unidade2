@@ -79,15 +79,15 @@ Node* ABB::search(const DataType target) {
     return nullptr;
 }
 
-void ABB::atualizaCounts(Node* node) {
+void ABB::atualizaCounts(Node* node, int value) {
     if (node != root) {
         if (node == node->parent->right) {
-            ++node->parent->r_cnt;
+            node->parent->r_cnt += value;
         }
         if (node == node->parent->left) {
-            ++node->parent->l_cnt;
+            node->parent->l_cnt += value;
         }
-        atualizaCounts(node->parent);
+        atualizaCounts(node->parent, value);
     }
 }
 
@@ -114,7 +114,7 @@ bool ABB::insert(const DataType target) {
         if (data > target) {
             if (current->left == nullptr) {
                 current->left = new Node(target, current);
-                atualizaCounts(current->left);
+                atualizaCounts(current->left, 1);
                 ++size;
                 if (count > height) {
                     ++height;
@@ -122,14 +122,14 @@ bool ABB::insert(const DataType target) {
                     levelCount.push_back(0);
                 }
                 // Atualiza o número de nós no nível inserido
-                ++levelCount[count-1];
+                ++levelCount[count - 1];
                 return true;
             }
             current = current->left;
         } else {
             if (current->right == nullptr) {
                 current->right = new Node(target, current);
-                atualizaCounts(current->right);
+                atualizaCounts(current->right, 1);
                 ++size;
                 if (count > height) {
                     ++height;
@@ -137,7 +137,7 @@ bool ABB::insert(const DataType target) {
                     levelCount.push_back(0);
                 }
                 // Atualiza o número de nós no nível inserido
-                ++levelCount[count-1];
+                ++levelCount[count - 1];
                 return true;
             }
             current = current->right;
@@ -150,51 +150,11 @@ bool ABB::insert(const DataType target) {
  * Me pergunto se é realmente necessário realizar tantas verificações...
  */
 void ABB::substituir(Node* first, Node* second) {
-    if (first->parent != nullptr) {
-        if (first == first->parent->left) {
-            first->parent->left = second;
-        } else {
-            first->parent->right = second;
-        }
-    }
-    if (second == second->parent->left) {
-        second->parent->left = first;
-    } else {
-        second->parent->right = first;
-    }
-
-    Node temp = *second;
-    // Provavelmente é melhor realizar uma sobrecarga ou criar um método que
-    // faça essas atribuições e as verificações
-    second->parent = first->parent;
-    second->left = first->left;
-    second->right = first->right;
-    second->l_cnt = first->l_cnt;
-    second->r_cnt = first->r_cnt;
-
-    first->parent = temp.parent;
-    first->left = temp.left;
-    first->right = temp.right;
-    first->l_cnt = temp.l_cnt;
-    first->r_cnt = temp.r_cnt;
-
-    if (first->parent == first) {
-        first->parent = second;
-    }
-    if (second->parent == second) {
-        second->parent = first;
-    }
-    if (second->left == second) {
-        second->left = first;
-    }
-    if (second->right == second) {
-        second->right = first;
-    }
-    if (root == first) {
-        second->parent = nullptr;
-        root = second;
-    }
+    int data = first->data;
+    first->data = second->data;
+    second->data = data;
 }
+
 /**
  * Preciso setar os ponteiros do nó a ser removido para nullptr antes de chamar
  * o delete? Ou só o delete já é o suficiente?
@@ -208,6 +168,7 @@ bool ABB::remove(const DataType target) {
         if (data == target) {
             // Nenhum filho
             if (current->left == nullptr && current->right == nullptr) {
+                atualizaCounts(current, -1);
                 if (current->parent->left == current) {
                     current->parent->left = nullptr;
                 } else if (current->parent->right == current) {
@@ -219,35 +180,41 @@ bool ABB::remove(const DataType target) {
             }
             // Um único filho
             if (current->left == nullptr) {
-                substituir(current, current->right);
+                atualizaCounts(current, -1);
                 if (current->parent->left == current) {
-                    current->parent->left = nullptr;
+                    current->parent->left = current->right;
                 } else if (current->parent->right == current) {
-                    current->parent->right = nullptr;
+                    current->parent->right = current->right;
                 }
-                current->parent = nullptr;
-                current->left = nullptr;
-                current->right = nullptr;
+                current->right->parent = current->parent;
                 delete current;
+                --size;
                 return true;
             }
             if (current->right == nullptr) {
-                substituir(current, current->left);
+                atualizaCounts(current, -1);
                 if (current->parent->left == current) {
-                    current->parent->left = nullptr;
+                    current->parent->left = current->left;
                 } else if (current->parent->right == current) {
-                    current->parent->right = nullptr;
+                    current->parent->right = current->left;
                 }
-                current->parent = nullptr;
-                current->left = nullptr;
-                current->right = nullptr;
+                current->left->parent = current->parent;
                 delete current;
+                --size;
                 return true;
             }
             // Dois filhos
             Node* smallest = minimum(current->right);
             substituir(current, smallest);
-            continue;
+            atualizaCounts(smallest, -1);
+            if (smallest->parent->left == smallest) {
+                smallest->parent->left = nullptr;
+            } else if (smallest->parent->right == smallest) {
+                smallest->parent->right = nullptr;
+            }
+            delete smallest;
+            --size;
+            return true;
         } else if (data < target) {
             current = current->right;
         } else {
@@ -316,12 +283,12 @@ int ABB::mediana() {
 // Parece certo...
 bool ABB::ehCheia() { return size == std::pow(2, height) - 1; }
 
-// Falta atualizar esse método, está errado.
+// Parece certo...
 bool ABB::ehCompleta() {
-    int n = levelCount.size(); // para acessar o vector
-    if (n > 2){
+    int n = levelCount.size();  // para acessar o vector
+    if (n > 2) {
         // [... , x, y] se x = 2^level(x) -> é cheia
-        return levelCount[n-2] == std::pow(2, n-2);
+        return levelCount[n - 2] == std::pow(2, n - 2);
     }
     return true;
 }
