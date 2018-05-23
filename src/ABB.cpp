@@ -10,7 +10,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   22/05/2018
+ * @date   23/05/2018
  */
 
 #include "ABB.h"
@@ -118,10 +118,8 @@ bool ABB::insert(const DataType target) {
                 ++size;
                 if (count > height) {
                     ++height;
-                    // Não sei porque mas trocando 1 por 0 funciona
                     levelCount.push_back(0);
                 }
-                // Atualiza o número de nós no nível inserido
                 ++levelCount[count - 1];
                 return true;
             }
@@ -133,10 +131,8 @@ bool ABB::insert(const DataType target) {
                 ++size;
                 if (count > height) {
                     ++height;
-                    // Não sei porque mas trocando 1 por 0 funciona
                     levelCount.push_back(0);
                 }
-                // Atualiza o número de nós no nível inserido
                 ++levelCount[count - 1];
                 return true;
             }
@@ -147,7 +143,7 @@ bool ABB::insert(const DataType target) {
 }
 
 /**
- * Me pergunto se é realmente necessário realizar tantas verificações...
+ * Melhorar esse método seria interessante...
  */
 void ABB::substituir(Node* first, Node* second) {
     int data = first->data;
@@ -156,8 +152,7 @@ void ABB::substituir(Node* first, Node* second) {
 }
 
 /**
- * Preciso setar os ponteiros do nó a ser removido para nullptr antes de chamar
- * o delete? Ou só o delete já é o suficiente?
+ * Criar algumas sub-rotinas para simplificar o método.
  */
 
 bool ABB::remove(const DataType target) {

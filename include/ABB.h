@@ -10,7 +10,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   22/05/2018
+ * @date   23/05/2018
  */
 
 #ifndef INCLUDE_ABB_H_
@@ -77,6 +77,7 @@ struct Node {
      * @brief Constroi um novo objeto Node.
      *
      * @param value Valor a ser guardado pelo Node.
+     * @param n nível deste nó.
      * @param p Nó acima deste.
      * @param l Nó a esquerda deste.
      * @param r Nó a direita deste.
@@ -98,6 +99,9 @@ struct Node {
  */
 class ABB {
    private:
+    /**
+     * Contabiliza o numero de nós em cada nível da árvore e o numero de níveis.
+     */
     std::vector<short> levelCount;
     /**
      * Nó raiz da árvore.
