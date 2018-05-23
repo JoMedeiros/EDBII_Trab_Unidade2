@@ -17,7 +17,7 @@
 
 #include "ABB.h"
 int main(int argc, char const* argv[]) {
-    std::cout << "Ola árvore binária de busca! Você gosta de Raça Negra?\n";
+    
     std::cout << "Iniciando Testes:" << std::endl;
 
     ABB* abb = new ABB();
@@ -50,6 +50,14 @@ int main(int argc, char const* argv[]) {
         int resultado = abb->enesimoElemento(4);
         assert(resultado == 12);
         std::cout << "Passou no enesimoElemento do ultimo elemento!"
+                  << std::endl;
+    }
+    // posicao
+    {
+        int resultado = abb->enesimoElemento(4);
+        int indice = abb->posicao(resultado);
+        assert (indice == 4);
+        std::cout << "Passou no posicao!"
                   << std::endl;
     }
     // getSize() e atualizaCounts(Node* node)
