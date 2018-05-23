@@ -5,23 +5,31 @@
 
 Esse repositório é correspondente ao trabalho da segunda unidade da disciplina de Estruturas de Dados Básicas do curso de Bacharelado em Tecnologia da Informação(BTI) do Instituto Metrópole Digital(IMD), Universidade Federal do Rio Grande do Norte(UFRN).
 O trabalho é uma implementação de uma Árvore de Busca Binária com algumas funcionalidades adicionais.
-<!--Name, version, description, and/or features of the program.-->    
+<!--Name, version, description, and/or features of the program.-->
+<!--
+    System requirements.
+    Install, uninstall, configuration, and operating instructions.
+    Files list.
+    Credit, acknowledgments, contact information, and copyright.
+    Known bugs and a change log.
+-->
 
 ## Intro
 
-A binary search tree is a data structure in which the key in each node in the left subtree is less than or equal the key of its parent node. The search tree data structure supports many operations such as search, minimum, maximum, predecessor, successor, insert and delete.
+Uma árvore de busca binária é uma estrutura de dados en que a chave de cada nó da subárvore a esquerda é menor ou igual a chave do seu nó pai. 
+A árvore de busca suporta várias operações como busca, mínimo, máximo, predecessor, sucessor, inserção e remoção.
 
 #### Funcionalidades (lista TODO)
 
-- [ ] percurso simétrico
+- [x] percurso simétrico
 - [x] busca
 - [x] inserir (Usa busca)
 - [x] remover (Usa busca)
-- [ ] enésimo elemento
-- [ ] acessar posição
+- [x] enésimo elemento
+- [x] acessar posição
 - [ ] mediana
-- [ ] é cheia (booleano)
-- [ ] é completa (booleano)
+- [x] é cheia (booleano)
+- [x] é completa (booleano)
 - [x] toString por nível
 
 #### Opcionais/Extras
@@ -107,10 +115,3 @@ Lista de Instruções:
 [3.2]: https://www.facebook.com/JosivanMedeiros
 [3.6]: https://github.com/JoMedeiros
 
-<!--
-    System requirements.
-    Install, uninstall, configuration, and operating instructions.
-    Files list.
-    Credit, acknowledgments, contact information, and copyright.
-    Known bugs and a change log.
--->

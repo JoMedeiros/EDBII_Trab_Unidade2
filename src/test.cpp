@@ -17,7 +17,7 @@
 
 #include "ABB.h"
 int main(int argc, char const* argv[]) {
-    std::cout << "Ola árvore binária de busca! Você gosta de Raça Negra?\n";
+    
     std::cout << "Iniciando Testes:" << std::endl;
 
     ABB* abb = new ABB();
@@ -50,6 +50,14 @@ int main(int argc, char const* argv[]) {
         int resultado = abb->enesimoElemento(4);
         assert(resultado == 12);
         std::cout << "Passou no enesimoElemento do ultimo elemento!"
+                  << std::endl;
+    }
+    // posicao
+    {
+        int resultado = abb->enesimoElemento(4);
+        int indice = abb->posicao(resultado);
+        assert (indice == 4);
+        std::cout << "Passou no posicao!"
                   << std::endl;
     }
     // getSize() e atualizaCounts(Node* node)
@@ -93,10 +101,21 @@ int main(int argc, char const* argv[]) {
         std::cout << "Passou no enesimoElemento com um numero no meio!"
                   << std::endl;
     }
+    // ehCheia()
     {
         bool resultado = abb->ehCheia();
         assert(resultado == true);
         std::cout << "Passou no ehCheia!" << std::endl;
+    }
+    // ehCompleta()
+    {
+        ABB* abb2 = new ABB();
+        abb2->insert(2); abb2->insert(3); abb2->insert(4); // Arvore ziguezague
+        bool resultado = abb2->ehCompleta();
+        assert(resultado == false); // Teste negativo
+        resultado = abb->ehCompleta();
+        assert(resultado == true); // Teste positivo
+        std::cout << "Passou no não ehCompleta!" << std::endl;
     }
     // remove(int n)
     {
@@ -141,6 +160,6 @@ int main(int argc, char const* argv[]) {
         assert(rootData == 9);
         std::cout << "Passou no remove da raiz!" << std::endl;
     }
-
+    
     return 0;
 }
