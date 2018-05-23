@@ -161,10 +161,12 @@ void ABB::substituir(Node* first, Node* second) {
  */
 
 bool ABB::remove(const DataType target) {
+    int count = 0;
     Node* current = this->root;
     DataType data = DataType();
     while (current != nullptr) {
         data = current->data;
+        ++count;
         if (data == target) {
             // Nenhum filho
             if (current->left == nullptr && current->right == nullptr) {
@@ -176,6 +178,7 @@ bool ABB::remove(const DataType target) {
                 }
                 delete current;
                 --size;
+                --levelCount[count - 1];
                 return true;
             }
             // Um único filho
@@ -189,6 +192,7 @@ bool ABB::remove(const DataType target) {
                 current->right->parent = current->parent;
                 delete current;
                 --size;
+                --levelCount[count - 1];
                 return true;
             }
             if (current->right == nullptr) {
@@ -201,6 +205,7 @@ bool ABB::remove(const DataType target) {
                 current->left->parent = current->parent;
                 delete current;
                 --size;
+                --levelCount[count - 1];
                 return true;
             }
             // Dois filhos
@@ -214,6 +219,7 @@ bool ABB::remove(const DataType target) {
             }
             delete smallest;
             --size;
+            --levelCount[count - 1];
             return true;
         } else if (data < target) {
             current = current->right;
