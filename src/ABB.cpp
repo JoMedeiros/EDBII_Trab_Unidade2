@@ -15,31 +15,21 @@
 
 #include "ABB.h"
 
+// Tempo constante, logo Theta(1)
+// Nenhum laço ou chamada de função
 Node::Node(DataType value, int n, Node* p, Node* l, Node* r)
-    : parent(p), left(l), right(r), data(value), level(n) {
-    if (l == nullptr) {
-        l_cnt = countChildren(l) + 1;
-    } else {
-        l_cnt = 0;
-    }
-    if (r == nullptr) {
-        r_cnt = countChildren(r) + 1;
-    } else {
-        r_cnt = 0;
-    }
-}
+    : parent(p), left(l), right(r), data(value), level(n), l_cnt(0), r_cnt(0) {}
 
-int Node::countChildren(Node* n) {
-    if (n == nullptr) {
-        return -1;
-    }
-    return n->r_cnt + n->l_cnt;
-}
-
+// Tempo constante, logo Theta(1)
+// Nenhum laço ou chamada de função
 ABB::ABB(Node* r) : root(r), size(0), height(0) { levelCount.reserve(10); }
 
+// Depende da complexidade do recursiveErase e do numero de nós da árvore
+// Uma chamada a função recursiva
 ABB::~ABB() { recursiveErase(root); }
 
+// Percorre todos os nós a partir do nó indicado, logo: Theta(n)
+// Função recursiva
 void ABB::recursiveErase(Node* node) {
     if (node != nullptr) {
         Node* left = node->left;
@@ -53,12 +43,20 @@ void ABB::recursiveErase(Node* node) {
     }
 }
 
+// Tempo constante, logo Theta(1)
+// Nenhum laço ou chamada de função
 Node* ABB::getRoot() { return root; }
 
+// Tempo constante, logo Theta(1)
+// Nenhum laço ou chamada de função
 int ABB::getSize() { return size; }
 
+// Tempo constante, logo Theta(1)
+// Nenhum laço ou chamada de função
 int ABB::getHeight() { return height; }
 
+// Pior caso é uma árvore zig-zag, logo O(n)
+// Utiliza um laço while
 Node* ABB::search(const DataType target) {
     Node* current = this->root;
     DataType data = DataType();
@@ -76,6 +74,9 @@ Node* ABB::search(const DataType target) {
     return nullptr;
 }
 
+// O pior caso depende da complexidade do outro insere
+// Dois casos, no primeiro temos tempo constante e no segundo uma chamada
+// recursiva
 bool ABB::insere(const DataType target) {
     if (root == nullptr) {
         root = new Node(target, 1, nullptr);
@@ -87,6 +88,8 @@ bool ABB::insere(const DataType target) {
     return insere(root, target);
 }
 
+// O pior caso é uma sub-árvore zig-zag, logo O(n)
+// Função recursiva
 bool ABB::insere(Node* node, const DataType target) {
     int data = node->data;
     if (data != target) {
@@ -95,7 +98,7 @@ bool ABB::insere(Node* node, const DataType target) {
                 node->right = new Node(target, node->level + 1, node);
                 if (node->right->level > height) {
                     ++height;
-                    levelCount.push_back(std::pow(2, height - 1));
+                    levelCount.push_back((2u << height) - 1u);
                 }
                 ++size;
                 --levelCount[node->right->level - 1];
@@ -111,7 +114,7 @@ bool ABB::insere(Node* node, const DataType target) {
                 node->left = new Node(target, node->level + 1, node);
                 if (node->left->level > height) {
                     ++height;
-                    levelCount.push_back(std::pow(2, height - 1));
+                    levelCount.push_back((2u << height) - 1u);
                 }
                 ++size;
                 --levelCount[node->left->level - 1];
@@ -127,12 +130,16 @@ bool ABB::insere(Node* node, const DataType target) {
     return false;
 }
 
+// Tempo constante, logo Theta(1)
+// Nenhum laço ou chamada de função
 void ABB::substituir(Node* first, Node* second) {
     int data = first->data;
     first->data = second->data;
     second->data = data;
 }
 
+// Tempo constante, logo Theta(1)
+// Nenhum laço ou chamada de função
 void ABB::atualizaParent(Node* node1, Node* node2) {
     if (node1 == root) {
         root = node2;
@@ -145,16 +152,22 @@ void ABB::atualizaParent(Node* node1, Node* node2) {
     }
 }
 
+// Tempo constante, logo Theta(1)
+// Nenhum laço ou chamada de função
 void ABB::atualizaNivelENodes(Node* node) {
     --size;
     ++levelCount[node->level - 1];
-    if (levelCount[node->level - 1] == std::pow(2, node->level - 1)) {
+    if (levelCount[node->level - 1] == ((2u << node->level) - 1u)) {
         levelCount.pop_back();
     }
 }
-
+// O pior caso depende da complexidade do outro remove
+// Função recursiva
 bool ABB::remove(const DataType target) { return remove(root, target); }
 
+// O pior caso é uma sub-árvore zig-zag, onde o nó a ser removido é a folha,
+// logo O(n)
+// Função recursiva e funções com Theta(1), função com laço while
 bool ABB::remove(Node* node, const DataType target) {
     if (node != nullptr) {
         int data = node->data;
@@ -200,7 +213,9 @@ bool ABB::remove(Node* node, const DataType target) {
     }
     return false;
 }
-
+// O no pior caso o elemento com esse indice não está na árvore, e o laço while
+// terá se repetido lg(n), logo O(lgn)
+// Laço while
 int ABB::enesimoElemento(const int n) {
     int increment = 0;
     int nodes = 0;
@@ -220,6 +235,9 @@ int ABB::enesimoElemento(const int n) {
     throw std::out_of_range("Não existe a posição: " + n);
 }
 
+// O no pior caso esse elemento não está na árvore, e o laço while
+// terá se repetido lg(n), logo O(lgn)
+// Laço while
 int ABB::posicao(const int x) {
     int increment = 0;
     int nodes = 0;
@@ -240,7 +258,8 @@ int ABB::posicao(const int x) {
     }
     throw std::invalid_argument("Não existe o elemento: " + x);
 }
-
+// Depende da complexidade do enesimoElemento
+// Função recursiva
 int ABB::mediana() {
     if (size % 2 == 0) {
         return enesimoElemento(size / 2);
@@ -249,8 +268,12 @@ int ABB::mediana() {
     }
 }
 
-bool ABB::ehCheia() { return size == std::pow(2, height) - 1; }
+// Tempo constante, logo Theta(1)
+// Nenhum laço ou chamada de função
+bool ABB::ehCheia() { return size == (2u << height) - 1u; }
 
+// Tempo constante, logo Theta(1)
+// Nenhum laço ou chamada de função
 bool ABB::ehCompleta() {
     int n = levelCount.size();
     if (n > 2) {
@@ -259,6 +282,8 @@ bool ABB::ehCompleta() {
     return true;
 }
 
+// Utiliza um percusso por nível, logo Theta(n)
+// Laço while
 std::string ABB::toString() {
     std::string result;
     std::queue<Node*> nodes;
@@ -278,6 +303,8 @@ std::string ABB::toString() {
     return "{ " + result + "}";
 }
 
+// No pior caso temos uma árvore zig-zag, logo O(n)
+// Laço while
 Node* ABB::minimum(Node* node) {
     Node* step = node;
     if (node == nullptr) {
@@ -291,6 +318,8 @@ Node* ABB::minimum(Node* node) {
     return smallest;
 }
 
+// No pior caso temos uma árvore zig-zag, logo O(n)
+// Laço while
 Node* ABB::maximum(Node* node) {
     Node* step = node;
     if (node == nullptr) {

@@ -44,11 +44,11 @@ struct Node {
     /**
      * Número de nós a esquerda.
      */
-    int l_cnt;
+    unsigned int l_cnt;
     /**
      * Número de nós a direita.
      */
-    int r_cnt;
+    unsigned int r_cnt;
     /**
      * Conteúdo armazenado neste nó.
      */
@@ -56,7 +56,7 @@ struct Node {
     /**
      * Nível do nó na árvore.
      */
-    int level;
+    unsigned int level;
 
    public:
     /**
@@ -88,7 +88,7 @@ class ABB {
     /**
      * Contabiliza o numero de nós em cada nível da árvore e o numero de níveis.
      */
-    std::vector<int16_t> levelCount;
+    std::vector<unsigned int> levelCount;
     /**
      * Nó raiz da árvore.
      */
@@ -96,11 +96,11 @@ class ABB {
     /**
      * Número de nós na árvore.
      */
-    int size;
+    unsigned int size;
     /**
      * Altura da árvore.
      */
-    int height;
+    unsigned int height;
 
     /**
      * @brief
