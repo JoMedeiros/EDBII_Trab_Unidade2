@@ -119,7 +119,7 @@ int main(int argc, char const *argv[]) {
     std::vector<Command> commands = readCommands(archives.second);
     ABB abb;
     for (auto var : values) {
-        bool ok = abb.insert(var);
+        bool ok = abb.insere(var);
         if (!ok) {
             std::cout << "Não foi possível inserir o elemento '" << var
                       << "'\n";

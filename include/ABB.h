@@ -10,31 +10,17 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   23/05/2018
+ * @date   24/05/2018
  */
 
 #ifndef INCLUDE_ABB_H_
 #define INCLUDE_ABB_H_
 
-#ifndef _GLIBCXX_STRING
-#include <string>
-#endif
-
-#ifndef _GLIBCXX_QUEUE
-#include <queue>
-#endif
-
-#ifndef _GLIBCXX_VECTOR
-#include <vector>
-#endif
-
-#ifndef _GLIBCXX_MATH
 #include <cmath>
-#endif
-
-#ifndef _GLIBCXX_STDEXCEPT
+#include <queue>
 #include <stdexcept>
-#endif
+#include <string>
+#include <vector>
 
 typedef int DataType;
 
@@ -102,7 +88,7 @@ class ABB {
     /**
      * Contabiliza o numero de nós em cada nível da árvore e o numero de níveis.
      */
-    std::vector<short> levelCount;
+    std::vector<int16_t> levelCount;
     /**
      * Nó raiz da árvore.
      */
@@ -115,6 +101,50 @@ class ABB {
      * Altura da árvore.
      */
     int height;
+
+    /**
+     * @brief
+     *
+     * @param node
+     * @param target
+     * @param level
+     */
+    void placeNode(Node* node, const DataType target, int level);
+
+    /**
+     * @brief Insere um novo nó com o conteúdo indicado na subárvore indicada
+     * por node.
+     *
+     * @param node Node raiz da subárvore onde o nó será inserido.
+     * @param target Conteúdo a ser inserido.
+     * @return true Caso seja inserido com sucesso.
+     * @return false Caso não seja possível inserir. (Elemento repetido)
+     */
+    bool insere(Node* node, const DataType target);
+
+    /**
+     * @brief
+     *
+     * @param node1
+     * @param node2
+     */
+    void atualizaParent(Node* node1, Node* node2);
+    /**
+     * @brief
+     *
+     * @param node
+     */
+    void atualizaNivelENodes(Node* node);
+    /**
+     * @brief Remove o novo nó com o conteúdo indicado na subárvore indicada
+     * por node.
+     *
+     * @param node Node raiz da subárvore onde o nó será removido.
+     * @param target Conteúdo a ser removido.
+     * @return true Caso seja removido com sucesso.
+     * @return false Caso não seja possível remover. (Elemento não encontrado)
+     */
+    bool remove(Node* node, const DataType target);
 
    public:
     /**
@@ -162,21 +192,13 @@ class ABB {
     Node* search(const DataType target);
 
     /**
-     * @brief Atualiza a contagem de filhos a esquerda e a direita de todos os
-     *        nós entre o nó indicado e a raiz. Incrementando em 1.
-     *
-     * @param node Nó de inicio.
-     * @param int Valor do incremento / decremento.
-     */
-    void atualizaCounts(Node* node, int value);
-    /**
      * @brief Insere um novo nó com o conteúdo indicado na árvore.
      *
      * @param target Conteúdo a ser inserido.
      * @return true Caso seja inserido com sucesso.
      * @return false Caso não seja possível inserir. (Elemento repetido)
      */
-    bool insert(const DataType target);
+    bool insere(const DataType target);
     /**
      * @brief Substitui o segundo nó pelo primeiro.
      *
