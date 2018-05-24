@@ -10,7 +10,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   23/05/2018
+ * @date   24/05/2018
  */
 
 #include "ABB.h"
@@ -59,9 +59,6 @@ int ABB::getSize() { return size; }
 
 int ABB::getHeight() { return height; }
 
-/**
- * Search normal.
- */
 Node* ABB::search(const DataType target) {
     Node* current = this->root;
     DataType data = DataType();
@@ -79,165 +76,131 @@ Node* ABB::search(const DataType target) {
     return nullptr;
 }
 
-void ABB::atualizaCounts(Node* node, int value) {
-    if (node != root) {
-        if (node == node->parent->right) {
-            node->parent->r_cnt += value;
-        }
-        if (node == node->parent->left) {
-            node->parent->l_cnt += value;
-        }
-        atualizaCounts(node->parent, value);
-    }
-}
-
-/**
- * Insert Padrão... Segundo o PDF eu acho que não é possivel usar ele.
- */
-bool ABB::insert(const DataType target) {
-    Node* current = this->root;
-    DataType data = DataType();
-    if (this->root == nullptr) {
-        this->root = new Node(target);
-        ++size;
-        ++height;
-        levelCount.push_back(1);
+bool ABB::insere(const DataType target) {
+    if (root == nullptr) {
+        root = new Node(target, 1, nullptr);
+        levelCount.push_back(0);
+        height = 1;
+        size = 1;
         return true;
     }
-    int count = 1;
-    while (current != nullptr) {
-        data = current->data;
-        if (data == target) {
-            return false;
-        }
-        ++count;
-        if (data > target) {
-            if (current->left == nullptr) {
-                current->left = new Node(target, count, current);
-                atualizaCounts(current->left, 1);
-                ++size;
-                if (count > height) {
+    return insere(root, target);
+}
+
+bool ABB::insere(Node* node, const DataType target) {
+    int data = node->data;
+    if (data != target) {
+        if (data < target) {
+            if (node->right == nullptr) {
+                node->right = new Node(target, node->level + 1, node);
+                if (node->right->level > height) {
                     ++height;
-                    levelCount.push_back(0);
+                    levelCount.push_back(std::pow(2, height - 1));
                 }
-                ++levelCount[count - 1];
+                ++size;
+                --levelCount[node->right->level - 1];
+                ++node->r_cnt;
                 return true;
             }
-            current = current->left;
+            if (insere(node->right, target)) {
+                ++node->r_cnt;
+                return true;
+            }
         } else {
-            if (current->right == nullptr) {
-                current->right = new Node(target, count, current);
-                atualizaCounts(current->right, 1);
-                ++size;
-                if (count > height) {
+            if (node->left == nullptr) {
+                node->left = new Node(target, node->level + 1, node);
+                if (node->left->level > height) {
                     ++height;
-                    levelCount.push_back(0);
+                    levelCount.push_back(std::pow(2, height - 1));
                 }
-                ++levelCount[count - 1];
+                ++size;
+                --levelCount[node->left->level - 1];
+                ++node->l_cnt;
                 return true;
             }
-            current = current->right;
+            if (insere(node->left, target)) {
+                ++node->l_cnt;
+                return true;
+            }
         }
     }
     return false;
 }
 
-/**
- * Melhorar esse método seria interessante...
- */
 void ABB::substituir(Node* first, Node* second) {
     int data = first->data;
     first->data = second->data;
     second->data = data;
 }
 
-/**
- * Criar algumas sub-rotinas para simplificar o método.
- */
+void ABB::atualizaParent(Node* node1, Node* node2) {
+    if (node1 == root) {
+        root = node2;
+        return;
+    }
+    if (node1->parent->left == node1) {
+        node1->parent->left = node2;
+    } else {
+        node1->parent->right = node2;
+    }
+}
 
-bool ABB::remove(const DataType target) {
-    Node* current = this->root;
-    DataType data = DataType();
-    while (current != nullptr) {
-        data = current->data;
+void ABB::atualizaNivelENodes(Node* node) {
+    --size;
+    ++levelCount[node->level - 1];
+    if (levelCount[node->level - 1] == std::pow(2, node->level - 1)) {
+        levelCount.pop_back();
+    }
+}
+
+bool ABB::remove(const DataType target) { return remove(root, target); }
+
+bool ABB::remove(Node* node, const DataType target) {
+    if (node != nullptr) {
+        int data = node->data;
         if (data == target) {
-            // Nenhum filho
-            if (current->left == nullptr && current->right == nullptr) {
-                atualizaCounts(current, -1);
-                if (current->parent->left == current) {
-                    current->parent->left = nullptr;
-                } else if (current->parent->right == current) {
-                    current->parent->right = nullptr;
-                }
-                --size;
-                --levelCount[current->level - 1];
-                if (levelCount[current->level - 1] == 0) {
-                    levelCount.pop_back();
-                }
-                delete current;
+            if (node->left == nullptr && node->right == nullptr) {
+                atualizaParent(node, nullptr);
+                atualizaNivelENodes(node);
+                delete node;
                 return true;
             }
-            // Um único filho
-            if (current->left == nullptr) {
-                atualizaCounts(current, -1);
-                if (current->parent->left == current) {
-                    current->parent->left = current->right;
-                } else if (current->parent->right == current) {
-                    current->parent->right = current->right;
-                }
-                current->right->parent = current->parent;
-                --size;
-                --levelCount[current->right->level - 1];
-                if (levelCount[current->right->level - 1] == 0) {
-                    levelCount.pop_back();
-                }
-                delete current;
+            if (node->left == nullptr) {
+                atualizaParent(node, node->right);
+                atualizaNivelENodes(node->right);
+                node->right->parent = node->parent;
+                delete node;
                 return true;
             }
-            if (current->right == nullptr) {
-                atualizaCounts(current, -1);
-                if (current->parent->left == current) {
-                    current->parent->left = current->left;
-                } else if (current->parent->right == current) {
-                    current->parent->right = current->left;
-                }
-                current->left->parent = current->parent;
-                --size;
-                --levelCount[current->left->level - 1];
-                if (levelCount[current->left->level - 1] == 0) {
-                    levelCount.pop_back();
-                }
-                delete current;
+            if (node->right == nullptr) {
+                atualizaParent(node, node->left);
+                atualizaNivelENodes(node->left);
+                node->left->parent = node->parent;
+                delete node;
                 return true;
             }
-            // Dois filhos
-            Node* smallest = minimum(current->right);
-            substituir(current, smallest);
-            atualizaCounts(smallest, -1);
-            if (smallest->parent->left == smallest) {
-                smallest->parent->left = nullptr;
-            } else if (smallest->parent->right == smallest) {
-                smallest->parent->right = nullptr;
-            }
-            --size;
-            --levelCount[smallest->level - 1];
-            if (levelCount[smallest->level - 1] == 0) {
-                levelCount.pop_back();
-            }
+            Node* smallest = minimum(node->right);
+            substituir(node, smallest);
+            atualizaParent(smallest, nullptr);
+            atualizaNivelENodes(smallest);
             delete smallest;
             return true;
-        } else if (data < target) {
-            current = current->right;
+        }
+        if (data < target) {
+            if (remove(node->right, target)) {
+                --node->r_cnt;
+                return true;
+            }
         } else {
-            current = current->left;
+            if (remove(node->left, target)) {
+                --node->l_cnt;
+                return true;
+            }
         }
     }
     return false;
 }
 
-/**
- * Ainda utilizo a estratégia de busca
- */
 int ABB::enesimoElemento(const int n) {
     int increment = 0;
     int nodes = 0;
@@ -257,9 +220,6 @@ int ABB::enesimoElemento(const int n) {
     throw std::out_of_range("Não existe a posição: " + n);
 }
 
-/**
- * Ainda utilizo a estratégia de busca
- */
 int ABB::posicao(const int x) {
     int increment = 0;
     int nodes = 0;
@@ -280,9 +240,7 @@ int ABB::posicao(const int x) {
     }
     throw std::invalid_argument("Não existe o elemento: " + x);
 }
-/**
- * Parece simples demais... deve estar errado...
- */
+
 int ABB::mediana() {
     if (size % 2 == 0) {
         return enesimoElemento(size / 2);
@@ -291,25 +249,16 @@ int ABB::mediana() {
     }
 }
 
-// Parece certo...
 bool ABB::ehCheia() { return size == std::pow(2, height) - 1; }
 
-// Parece certo...
 bool ABB::ehCompleta() {
-    int n = levelCount.size();  // para acessar o vector
+    int n = levelCount.size();
     if (n > 2) {
-        // [... , x, y] se x = 2^level(x) -> é cheia
-        int a = levelCount[n - 2];
-        int b = std::pow(2, n - 2) - 1;
-        return levelCount[n - 2] >= std::pow(2, n - 2) - 1;
+        return levelCount[n - 2] == 0;
     }
     return true;
 }
 
-/**
- * Utiliza uma std::queue, talvez seja possivel fazer esse método sem
- * utiliza-la.
- */
 std::string ABB::toString() {
     std::string result;
     std::queue<Node*> nodes;

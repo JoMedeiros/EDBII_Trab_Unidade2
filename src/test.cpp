@@ -23,29 +23,29 @@ int main(int argc, char const* argv[]) {
     Node* root = abb->getRoot();
     assert(root == nullptr);
     std::cout << "Passou no do construtor vazio!" << std::endl;
-    // insert(int target)
+    // insere(int target)
     {
-        abb->insert(8);
+        abb->insere(8);
         int size = abb->getSize();
         assert(size == 1);
         std::cout << "Passou no inserir numa abb vazia!" << std::endl;
     }
     {
-        abb->insert(4);
+        abb->insere(4);
         int size = abb->getSize();
         assert(size == 2);
         std::cout << "Passou no inserir numa abb com um elemento!" << std::endl;
     }
     // enesimoElemento(int n)
     {
-        abb->insert(2);
+        abb->insere(2);
         int resultado = abb->enesimoElemento(1);
         assert(resultado == 2);
         std::cout << "Passou no enesimoElemento do primeiro elemento!"
                   << std::endl;
     }
     {
-        abb->insert(12);
+        abb->insere(12);
         int resultado = abb->enesimoElemento(4);
         assert(resultado == 12);
         std::cout << "Passou no enesimoElemento do ultimo elemento!"
@@ -80,8 +80,9 @@ int main(int argc, char const* argv[]) {
     {
         int array[] = {6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15};
         for (int i = 0; i < 11; ++i) {
-            abb->insert(array[i]);
+            abb->insere(array[i]);
         }
+        std::cout << abb->toString() << std::endl;
         // { 8 4 12 2 6 10 14 1 3 5 7 9 11 13 15 }
     }
     {
@@ -113,9 +114,9 @@ int main(int argc, char const* argv[]) {
     // ehCompleta()
     {
         ABB* abb2 = new ABB();
-        abb2->insert(2);
-        abb2->insert(3);
-        abb2->insert(4);  // Arvore ziguezague
+        abb2->insere(2);
+        abb2->insere(3);
+        abb2->insere(4);  // Arvore ziguezague
         bool resultado = abb2->ehCompleta();
         assert(resultado == false);  // Teste negativo
         resultado = abb->ehCompleta();
