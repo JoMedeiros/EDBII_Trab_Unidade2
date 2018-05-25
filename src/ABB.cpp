@@ -10,7 +10,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   24/05/2018
+ * @date   25/05/2018
  */
 
 #include "ABB.h"
@@ -18,7 +18,7 @@
 // Tempo constante, logo Theta(1)
 // Nenhum laço ou chamada de função
 Node::Node(DataType value, int n, Node* p, Node* l, Node* r)
-    : parent(p), left(l), right(r), data(value), level(n), l_cnt(0), r_cnt(0) {}
+    : parent(p), left(l), right(r), l_cnt(0), r_cnt(0), data(value), level(n) {}
 
 // Tempo constante, logo Theta(1)
 // Nenhum laço ou chamada de função
@@ -98,7 +98,7 @@ bool ABB::insere(Node* node, const DataType target) {
                 node->right = new Node(target, node->level + 1, node);
                 if (node->right->level > height) {
                     ++height;
-                    levelCount.push_back(1u << height - 1);
+                    levelCount.push_back(1u << (height - 1));
                 }
                 ++size;
                 --levelCount[node->right->level - 1];
@@ -114,7 +114,7 @@ bool ABB::insere(Node* node, const DataType target) {
                 node->left = new Node(target, node->level + 1, node);
                 if (node->left->level > height) {
                     ++height;
-                    levelCount.push_back(1u << height - 1);
+                    levelCount.push_back(1u << (height - 1));
                 }
                 ++size;
                 --levelCount[node->left->level - 1];
@@ -157,7 +157,7 @@ void ABB::atualizaParent(Node* node1, Node* node2) {
 void ABB::atualizaNivelENodes(Node* node) {
     --size;
     ++levelCount[node->level - 1];
-    if (levelCount[node->level - 1] == (1u << node->level - 1)) {
+    if (levelCount[node->level - 1] == (1u << (node->level - 1))) {
         levelCount.pop_back();
     }
 }

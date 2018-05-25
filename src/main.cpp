@@ -52,26 +52,6 @@ std::pair<std::string, std::string> validateArgs(int argc, char const *argv[]) {
     return std::make_pair(arquivo_arvore, arquivo_instrucoes);
 }
 
-std::vector<int> readValues(const std::string &path) {
-    std::string line;
-    int value;
-    std::vector<int> values;
-    std::ifstream data;
-
-    data.open(path);
-    if (!data.is_open()) {
-        std::cout << "O arquivo '" << path << "' não pode ser aberto."
-                  << std::endl;
-        std::exit(-1);
-    }
-    while (std::getline(data, line)) {
-        std::istringstream(line) >> value;
-        values.push_back(value);
-    }
-    data.close();
-    return values;
-}
-
 std::vector<std::string> parse(std::string target, std::string delimiter) {
     size_t pos_start = 0;
     size_t pos_end;
@@ -85,6 +65,28 @@ std::vector<std::string> parse(std::string target, std::string delimiter) {
     }
     result.push_back(target.substr(pos_start));
     return result;
+}
+
+std::vector<int> readValues(const std::string &path) {
+    std::string line;
+    int value;
+    std::vector<int> values;
+    std::ifstream data;
+
+    data.open(path);
+    if (!data.is_open()) {
+        std::cout << "O arquivo '" << path << "' não pode ser aberto."
+                  << std::endl;
+        std::exit(-1);
+    }
+    std::getline(data, line);
+    std::vector<std::string> numbers = parse(line, " ");
+    for (auto number : numbers) {
+        std::istringstream(number) >> value;
+        values.push_back(value);
+    }
+    data.close();
+    return values;
 }
 
 std::vector<Command> readCommands(const std::string &path) {
