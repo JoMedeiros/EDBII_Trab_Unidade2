@@ -10,7 +10,7 @@
  * @author JoMedeiros
  *
  * @since  20/05/2018
- * @date   22/05/2018
+ * @date   25/05/2018
  */
 
 #include <fstream>
@@ -120,23 +120,20 @@ int main(int argc, char const *argv[]) {
     std::vector<int> values = readValues(archives.first);
     std::vector<Command> commands = readCommands(archives.second);
     ABB abb;
-    for (auto var : values) {
-        bool ok = abb.insere(var);
+    for (auto value : values) {
+        bool ok = abb.insere(value);
         if (!ok) {
-            std::cout << "Não foi possível inserir o elemento '" << var
-                      << "'\n";
+            std::cout << "Não foi possível inserir o elemento '" << value
+                      << "' elemento já presente na árvore.\n";
         }
     }
     int resultado;
     bool sucesso;
-    for (auto var : commands) {
-        std::cout << var.getCommand() << " ";
-        if (var.getArg() != -1) {
-            std::cout << var.getArg();
-        }
-        std::cout << ": ";
-        switch (var.getType()) {
+    for (auto command : commands) {
+        std::cout << command.getCommand() << " ";
+        switch (command.getType()) {
             case (Command::CommandType::CHEIA):
+                std::cout << ": ";
                 if (abb.ehCheia()) {
                     std::cout << "Sim é Cheia!" << std::endl;
                 } else {
@@ -144,6 +141,7 @@ int main(int argc, char const *argv[]) {
                 }
                 break;
             case (Command::CommandType::COMPLETA):
+                std::cout << ": ";
                 if (abb.ehCompleta()) {
                     std::cout << "Sim é Completa!" << std::endl;
                 } else {
@@ -151,39 +149,44 @@ int main(int argc, char const *argv[]) {
                 }
                 break;
             case (Command::CommandType::ENESIMO):
+                std::cout << command.getArg() << ": ";
                 try {
-                    resultado = abb.enesimoElemento(var.getArg());
+                    resultado = abb.enesimoElemento(command.getArg());
                     std::cout << resultado << std::endl;
                 } catch (std::out_of_range bd) {
                     std::cout << bd.what() << std::endl;
                 }
                 break;
             case (Command::CommandType::IMPRIMA):
+                std::cout << ": ";
                 std::cout << abb.toString() << std::endl;
                 break;
             case (Command::CommandType::MEDIANA):
+                std::cout << ": ";
                 std::cout << abb.mediana() << std::endl;
                 break;
             case (Command::CommandType::POSICAO):
+                std::cout << command.getArg() << ": ";
                 try {
-                    resultado = abb.posicao(var.getArg());
+                    resultado = abb.posicao(command.getArg());
                     std::cout << resultado << std::endl;
-                } catch (std::out_of_range bd) {
+                } catch (std::invalid_argument bd) {
                     std::cout << bd.what() << std::endl;
                 }
                 break;
             case (Command::CommandType::REMOVA):
-                sucesso = abb.remove(var.getArg());
+                std::cout << command.getArg() << ": ";
+                sucesso = abb.remove(command.getArg());
                 if (sucesso) {
-                    std::cout << "Elemento " << var.getArg() << " removido!"
+                    std::cout << "Elemento " << command.getArg() << " removido!"
                               << std::endl;
                 } else {
                     std::cout << "Não foi possível remover o elemento "
-                              << var.getArg() << std::endl;
+                              << command.getArg() << std::endl;
                 }
                 break;
             default:
-                std::cout << "O comando '" << var.getCommand()
+                std::cout << "O comando '" << command.getCommand()
                           << " não foi reconhecido!" << std::endl;
                 break;
         }

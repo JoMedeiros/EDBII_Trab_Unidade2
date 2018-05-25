@@ -232,7 +232,7 @@ int ABB::enesimoElemento(const int n) {
             current = current->left;
         }
     }
-    throw std::out_of_range("Não existe a posição: " + n);
+    throw std::out_of_range("Não existe a posição: " + std::to_string(n));
 }
 
 // O no pior caso esse elemento não está na árvore, e o laço while
@@ -256,7 +256,7 @@ int ABB::posicao(const int x) {
             current = current->left;
         }
     }
-    throw std::invalid_argument("Não existe o elemento: " + x);
+    throw std::invalid_argument("Não existe o elemento: " + std::to_string(x));
 }
 // Depende da complexidade do enesimoElemento
 // Função recursiva
