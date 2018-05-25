@@ -98,7 +98,7 @@ bool ABB::insere(Node* node, const DataType target) {
                 node->right = new Node(target, node->level + 1, node);
                 if (node->right->level > height) {
                     ++height;
-                    levelCount.push_back((2u << height) - 1u);
+                    levelCount.push_back(1u << height - 1);
                 }
                 ++size;
                 --levelCount[node->right->level - 1];
@@ -114,7 +114,7 @@ bool ABB::insere(Node* node, const DataType target) {
                 node->left = new Node(target, node->level + 1, node);
                 if (node->left->level > height) {
                     ++height;
-                    levelCount.push_back((2u << height) - 1u);
+                    levelCount.push_back(1u << height - 1);
                 }
                 ++size;
                 --levelCount[node->left->level - 1];
@@ -157,7 +157,7 @@ void ABB::atualizaParent(Node* node1, Node* node2) {
 void ABB::atualizaNivelENodes(Node* node) {
     --size;
     ++levelCount[node->level - 1];
-    if (levelCount[node->level - 1] == ((2u << node->level) - 1u)) {
+    if (levelCount[node->level - 1] == (1u << node->level - 1)) {
         levelCount.pop_back();
     }
 }
@@ -270,7 +270,7 @@ int ABB::mediana() {
 
 // Tempo constante, logo Theta(1)
 // Nenhum laço ou chamada de função
-bool ABB::ehCheia() { return size == (2u << height) - 1u; }
+bool ABB::ehCheia() { return size == (1u << height) - 1u; }
 
 // Tempo constante, logo Theta(1)
 // Nenhum laço ou chamada de função
