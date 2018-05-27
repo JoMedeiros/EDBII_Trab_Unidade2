@@ -1,0 +1,108 @@
+%123456789A123456789A123456789A123456789A123456789A123456789A123456789A123456789
+
+\subsection{Métodos de complexidade Linear}
+
+Um algoritmo de complexidade linear é ótimo nas situações em que é preciso 
+visitar todos os nós da árvore. Nesses casos o limite inferior do problema 
+também é O(n), o que faz do algoritmo assintoticamente ótimo.
+
+\subsubsection{Métodos que Acessam Todos os Nós}
+
+Os métodos que acessam todos os nós são algoritmos $\Theta$(n) e, por tanto,
+ são assintoticamente ótimos (já que esse também é o limite inferior do 
+ problema).
+
+\textsf{recursiveErase}
+
+Utiliza a ideia do percusso em pós-ordem para deletar todos os nós a partir de 
+uma raiz, apagando recursivamente suas sub-árvores. 
+
+\textsf{toString}
+
+Utiliza uma fila para percorrer a árvore por nível, algoritmo baseado no 
+pseudo-código mostrado em aula.
+
+\subsubsection{Métodos Dependentes da Altura}
+
+A complexidade desses algoritmos depende da construção da ABB. Quando a 
+árvore é completa eles são $O(log n)$ e são $O(n)$ para árvores ziguezague.
+
+\textsf{search}
+
+Utiliza a estratégia padrão para a busca numa árvore binária de busca, 
+comparando a partir da raiz com o dado buscado, e caso o dado seja encontrado, 
+retorna o nó atual, caso o conteúdo do nó atual seja menor que o buscado, 
+procuramos na subárvore a direita, senão na subárvore a esquerda. Se chegarmos 
+numa subárvore vazia retornamos \texttt{nullptr}.
+
+\textsf{insere} (ver \autoref{inserir})
+
+Utiliza a mesma estratégia da busca, porém se o dado for encontrado retorna 
+false, pois não podemos inserir um dado repetido, e quando chegarmos numa 
+subárvore vazia, inserimos o um novo nó com o dado, ao inserirmos verificamos 
+em qual nível da árvore esse nó foi criado, caso seja o primeiro nó de um novo 
+nível, adicionamos uma nova posição a um vetor que contabiliza o numero de nós 
+em cada nível, além de outras informações, durante a volta da recursão, caso o 
+novo nó tenha sido inserido, atualizamos os contadores de filhos a esquerda ou 
+a direita do nó, de acordo com a posição que o dado foi inserido.
+
+\textsf{minimum}
+
+Dado um nó de inicio avança sempre para o menor nó dessa subárvore, isto é para 
+o nó a esquerda. até encontrar uma subárvore vazia, e então retorna o nó 
+anterior a ela. Caso o nó fornecido já seja nulo, retorna a raiz da árvore.
+
+\textsf{maximum}
+
+Dado um nó de inicio avança sempre para o maior nó dessa subárvore, isto é para 
+o nó a direita. até encontrar uma subárvore vazia, e então retorna o nó 
+anterior a ela. Caso o nó fornecido já seja nulo, retorna a raiz da árvore.
+
+\textsf{remove} (ver \autoref{remover})
+
+Utiliza a mesma ideia de buscar um elemento e, caso ele seja encontrado, o 
+elemento é removido da árvore. A remoção possui diferentes passos dependendo do 
+número de filhos do nó a ser removido.\\
+Caso não possua filhos o nó apenas é removido e os devidos dados atualizados.
+O número de nós a esquerda ou a direita dos nós acima deste são atualizados na 
+volta da recursão.\\
+Caso tenha apenas um filho, o nó filho é colocado no lugar do nó removido, e 
+então as informações são atualizadas.\\
+Caso tenha dois filhos, então é buscado o substituto do nó a ser removido 
+utilizando o método \texttt{\_minimum\_} no filho a direita, e então a nova 
+posição do nó é removida, e então os dados atualizados.\\
+Se tomarmos a altura do nó a ser removido como sendo \textsf{k}, e sabendo que 
+o \texttt{\_minimum\_} será chamado para uma subárvore de \textsf{k}, podemos 
+concluir que o número de nós percorrido pela chamada do \texttt{\_minimum\_} 
+será menor ou igual a: $ h - k - 1 $. Onde $ h $ é a altura máxima da árvore.
+
+\textsf{enesimoElemento}
+
+Utiliza uma ideia similar a busca, porém em vez de usar o campo data, utiliza o 
+número de filhos a esquerda de um \emph{node}. O índice de um \emph{node} é o 
+número de \emph{nodes} a esquerda dele(\texttt{l\_cnt}) mais um. Caso o índice 
+seja igual a essa soma retornamos o campo data do node atual, caso o índice seja 
+maior, verificamos a subárvore a direita e armazenamos o número de \emph{nodes} 
+a esquerda do node atual para somar o total, senão apenas avançamos para a 
+subárvore a esquerda, e repetimos esse processo enquanto não encontrarmos uma 
+subárvore vazia.
+
+\textsf{posicao}
+
+Utiliza uma ideia muito semelhante ao busca e ao enesimoElemento, porém retorna 
+o índice do elemento buscado. Utiliza a estratégia de busca para encontrar o 
+elemento e a estratégia do enesimoElemento para descobrir o índice.
+
+\textsf{mediana}
+
+Utiliza a definição da mediana como elemento que divide o conjunto de dados em 
+dois, a informação do número de elementos da árvore e o método 
+\textsf{enesimoElemento} para descobrir qual o elemento que ocupa a posição 
+central (\textsf{enesimoElemento(n/2)} sendo $n$ o número de nós). 
+
+% ---
+% Finaliza a parte no bookmark do PDF, para que se inicie o bookmark na raiz
+% ---
+\bookmarksetup{startatroot}% 
+% ---
+

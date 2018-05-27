@@ -1,0 +1,63 @@
+\subsection{Métodos de Complexidade Constante}
+
+Esses métodos são mais simples de analisar uma vez que suas instruções 
+geralmente não envolvem \emph{loops}. A maioria dos métodos de complexidade
+constante da classe fazem acesso ou modificação de campos da classe (\emph{
+getters} e \emph{setters}). 
+
+Alguns métodos tem como finalidade acessar atributos de forma indireta, 
+possibilitando tratamento de erros e garantindo que a instrução não altere 
+o atributo. Esses métodos em Programação Orientada a Objetos (POO) são 
+chamados de getters. Os getters da classe são:
+
+\textsf{getSize}
+
+Retorna a quantidade de nós na árvore.
+
+\textsf{getRoot}
+
+Retorna um ponteiro para o \emph{node} raiz.
+
+\textsf{getHeight}
+
+Retorna a altura máxima da árvore.
+
+Outros métodos constantes possuem uma quantidade de instruções constante. 
+Alguns métodos necessitam fazer operação de potenciação, o que poderia aumentar 
+a complexidade, porém como as operações são feitas com potências de 2 o 
+problema foi resolvido com a operação de deslocamento a esquerda. Os demais 
+métodos de complexidade constante são:
+
+\textsf{ehCheia}
+
+Verifica se o numero de nodes da árvore é igual ao esperado com base na altura 
+da árvore por meio da fórmula mostrada em aula.
+
+\textsf{ehCompleta}
+
+Verifica se todas as posições para nodes no penúltimo nível da árvore já foram 
+ocupadas, isto é o numero de posições livres é zero.
+Caso a árvore tenha seja até o nível 2, ela é automaticamente completa.
+
+\textsf{substituir}
+
+Realiza uma troca entre os dados de dois nós, o ideal seria trabalhar com 
+ponteiros para o dado, ou trocar os apontadores de cada nó, mudando seus campos 
+de \texttt{parent}, \texttt{left}, \texttt{right}, \texttt{l\_cnt}, 
+\texttt{r\_cnt e level}, deixando apenas o campo data intocado.
+
+\textsf{atualizaParent}
+
+Dados dois nós, atualiza a informação do pai do primeiro para que a posição de 
+filho direito ou esquerdo em que o primeiro nó ocupava seja trocada para o 
+segundo nó informado.
+Caso o primeiro nó seja a raiz, o segundo nó ganha esse titulo.
+
+\textsf{atualizaNivelENodes}
+
+Decrementa o numero de nós da árvore, incrementa o numero de nós disponíveis no 
+nível do nó indicado, e verifica se é necessário apagar a existência desse 
+nível, caso o nó indicado seja o ultimo do nível.
+
+
+%123456789A123456789A123456789A123456789A123456789A123456789A123456789A123456789

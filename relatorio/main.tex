@@ -1,0 +1,328 @@
+\documentclass[
+	% -- opções da classe memoir --
+	article,			% indica que é um artigo acadêmico
+	12pt,				% tamanho da fonte
+	oneside,			% para impressão apenas no verso. Oposto a twoside
+	a4paper,			% tamanho do papel. 
+    % -- opções do pacote babel --
+	english,			% idioma adicional para hifenização
+	brazil,				% o último idioma é o principal do documento
+	]{abntex2}
+
+% ---
+% Pacotes fundamentais 
+% ---
+\usepackage{cmap}				% Mapear caracteres especiais no PDF
+\usepackage{lmodern}			% Usa a fonte Latin Modern
+\usepackage[T1]{fontenc}		% Seleção de códigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificação do documento (conversão 
+                                % automática dos acentos)
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{nomencl} 			% Lista de símbolos
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage{minted}             % Sintaxe do linguagens de programação
+\usepackage{xcolor}
+% ---
+
+% ---
+% Configurações de aparência do PDF final
+
+% alterando o aspecto da cor azul
+\definecolor{blue}{RGB}{0,50,100}
+\usemintedstyle{colorful}
+% ---		
+
+% ---
+% Pacotes de citações
+% ---
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+\usepackage[abnt-alf]{abntex2cite}	% Citações padrão ABNT
+% \usepackage[num]{abntex2cite}
+% ---
+
+% ---
+% Configurações do pacote backref
+% Usado sem a opção hyperpageref de backref
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+% Texto padrão antes do número das páginas
+\renewcommand{\backref}{}
+% Define os textos da citação
+%\renewcommand*{\backrefalt}[4]{
+%	\ifcase #1 %
+%		Nenhuma citação no texto.%
+%	\or
+%		Citado na página #2.%
+%	\else
+%		Citado #1 vezes nas páginas #2.%
+%	\fi}%
+% ---
+
+% ---
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ---
+\titulo{Implementação de Uma Árvore de Busca Binária com 
+Operações Adicionais Otimizadas}
+\autor{Gleydvan Macedo \and
+João Vítor Venceslau Coelho \and
+Josivan Medeiros da Silva Gois}
+\local{Brasil}
+\data{\today}
+\orientador[Docente:]{Silvia Maria Diniz Monteiro Maia}
+\instituicao{%
+  Universidade Federal do Rio Grande do Norte -- UFRN
+  \par
+  Instituto Metrópole Digital -- IMD
+  \par
+  Bacharelado em Tecnologia da Informação}
+\tipotrabalho{Tese (Doutorado)}
+% O preambulo deve conter o tipo do trabalho, o objetivo, 
+% o nome da instituição e a área de concentração 
+\preambulo{Relatório referente ao trabalho da segunda unidade da disciplina de 
+Estruturas de Dados Básicas.}
+% ---
+
+% informações do PDF
+\makeatletter
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={Implementação de Uma Árvore de Busca Binária com Operações 
+    	Adicionais Otimizadas},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={ávore}{árvore binária}{árvore binária de busca}{estrutura 
+		de dados}{análise de complexidade}, 
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=blue,          	% color of internal links
+    	citecolor=blue,        		% color of links to bibliography
+    	filecolor=magenta,      		% color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
+}
+\makeatother
+% --- 
+
+% ---
+% compila o indice
+% ---
+\makeindex
+% ---
+
+% ---
+% Altera as margens padrões
+% ---
+\setlrmarginsandblock{4cm}{4cm}{*}
+\setulmarginsandblock{4cm}{4cm}{*}
+\checkandfixthelayout
+% ---
+
+% --- 
+% Espaçamentos entre linhas e parágrafos 
+% --- 
+
+% O tamanho do parágrafo é dado por:
+\setlength{\parindent}{1.3cm}
+
+% Controle do espaçamento entre um parágrafo e outro:
+\setlength{\parskip}{0.2cm}  % tente também \onelineskip
+
+% Espaçamento simples
+\SingleSpacing
+
+% ----
+% Início do documento
+% ----
+\begin{document}
+
+% Retira espaço extra obsoleto entre as frases.
+\frenchspacing 
+
+% ----------------------------------------------------------
+% ELEMENTOS PRÉ-TEXTUAIS
+% ----------------------------------------------------------
+
+% Página de Título
+% \maketitle
+% Folha de Rosto
+\imprimirfolhaderosto
+
+% ---
+% inserir o sumario
+% ---
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage
+% ---
+
+% ----------------------------------------------------------
+% ELEMENTOS TEXTUAIS
+% ----------------------------------------------------------
+\textual
+
+% ----------------------------------------------------------
+% Introdução
+% ----------------------------------------------------------
+\section*{Introdução}
+
+Este documento apresenta uma discussão sobre a classe de Árvore Binária de 
+Busca(ABB) 
+implementada para o trabalho da segunda unidade da disciplina de Estruturas de 
+Dados Básicas. 
+Uma ABB implementa operações de busca, inserção e remoção. 
+Além dessas operações básicas a classe criada tem os métodos de acessar o 
+enésimo elemento em ordem simétrica, 
+retornar o índice de um elemento, determinar mediana, se a árvore é cheia, se é 
+completa e uma função para retornar uma representação por nível da árvore em 
+uma string.
+
+O objetivo foi de melhorar o desempenho da estrutura para a execução dessas 
+operações adicionando, quando necessário, atributos extras. 
+A seguir estão listadas os métodos criados e suas respectivas complexidades.
+
+% ----------------------------------------------------------
+% Desenvolvimento
+% ----------------------------------------------------------
+
+\input{secoes}
+% \nopagebreak[4]
+\input{secao2_1}
+% \nopagebreak[4]
+\input{secao2_2}
+
+% ----------------------------------------------------------
+% Conclusão
+% ----------------------------------------------------------
+\section*{Considerações finais}
+\addcontentsline{toc}{section}{Considerações finais}
+
+Existem hoje várias estruturas de dados prontas para uso e que atendem diversas
+necessidades de problemas recorrentes na computação. Porém, nem sempre 
+encontramos nessas estruturas a melhor solução para nossos problemas. Por isso é
+importante sempre estudar os problemas, analisar as soluções e fazer as 
+alterações necessárias para buscar a medida do possível soluções ótimas.
+No caso estudado vimos que a árvore de busca binária precisou ser alterada para 
+que pudéssemos reduzir a complexidade, adicionando atributos e alterando 
+instruções.
+%\begin{citacao}
+% Nem tudo que reluz é ouro
+ 
+% Nem todos que vagueiam estão perdidos
+ 
+% O velho que é forte não murcha
+ 
+% O gelo não atinge raízes profundas
+%\end{citacao}
+
+\pagebreak
+% ----------------------------------------------------------
+% ELEMENTOS PÓS-TEXTUAIS
+% ----------------------------------------------------------
+\postextual
+
+% ----------------------------------------------------------
+% Referências bibliográficas
+% ----------------------------------------------------------
+\nocite{book:339441, book:562370, jayme}
+\bibliographystyle{abnt-alf}
+\bibliography{referencias}
+
+% ----------------------------------------------------------
+% Glossário
+% ----------------------------------------------------------
+%
+% Há diversas soluções prontas para glossário em LaTeX. 
+% Consulte o manual do abnTeX2 para obter sugestões.
+%
+%\glossary
+
+% ----------------------------------------------------------
+% Apêndices
+% ----------------------------------------------------------
+\pagebreak
+% ---
+% Inicia os apêndices
+% ---
+\begin{apendicesenv}
+
+% ----------------------------------------------------------
+\chapter{\label{node}Cabeçalho do Node}
+% ----------------------------------------------------------
+
+\definecolor{BckGnd}{HTML}{FEEEDD}      % Define a cor de fundo do código
+\inputminted[
+    frame=lines,
+    framesep=2mm,
+    baselinestretch=1.2,
+    bgcolor=BckGnd,
+    fontsize=\footnotesize,
+    linenos,
+    firstline=30,
+    lastline=81
+]{cpp}{ABB.h}
+
+% ----------------------------------------------------------
+\chapter{\label{abb}Cabeçalho da ABB}
+% ----------------------------------------------------------
+
+\inputminted[
+    frame=lines,
+    framesep=2mm,
+    baselinestretch=1.2,
+    bgcolor=BckGnd,
+    fontsize=\footnotesize,
+    linenos,
+    firstline=83,
+    lastline=104
+]{cpp}{ABB.h}
+
+% ----------------------------------------------------------
+\chapter{\label{inserir}Inserir Elemento}
+% ----------------------------------------------------------
+
+\inputminted[
+    frame=lines,
+    framesep=2mm,
+    baselinestretch=1.2,
+    bgcolor=BckGnd,
+    fontsize=\footnotesize,
+    linenos,
+    firstline=78,
+    lastline=129
+]{cpp}{ABB.cpp}
+
+% ----------------------------------------------------------
+\chapter{\label{remover}Remover Elemento}
+% ----------------------------------------------------------
+
+\inputminted[
+    frame=lines,
+    framesep=2mm,
+    baselinestretch=1.2,
+    bgcolor=BckGnd,
+    fontsize=\footnotesize,
+    linenos,
+    firstline=164,
+    lastline=215
+]{cpp}{ABB.cpp}
+
+\end{apendicesenv}
+% ---
+
+% ----------------------------------------------------------
+% Anexos
+% ----------------------------------------------------------
+% \cftinserthook{toc}{AAA}
+% ---
+% Inicia os anexos (Coisas que não foi você que fez)
+% ---
+%\anexos
+% \begin{anexosenv}
+
+% ---
+% \chapter{Título do Anexo}
+% ---
+
+%\end{anexosenv}
+
+\end{document}
