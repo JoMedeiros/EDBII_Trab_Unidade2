@@ -1,18 +1,10 @@
 ### Trabalho da Unidade 2 da disciplina de Estruturas de Dados Básicas II
 
 # Árvore de Busca Binária 
-<!--[![Build Status](https://travis-ci.org/JoMedeiros/EDBII_BST.png?branch=master)](https://travis-ci.org/JoMedeiros/EDBII_BST)-->
+
 
 Esse repositório é correspondente ao trabalho da segunda unidade da disciplina de Estruturas de Dados Básicas do curso de Bacharelado em Tecnologia da Informação(BTI) do Instituto Metrópole Digital(IMD), Universidade Federal do Rio Grande do Norte(UFRN).
 O trabalho é uma implementação de uma Árvore de Busca Binária com algumas funcionalidades adicionais.
-<!--Name, version, description, and/or features of the program.-->
-<!--
-    System requirements.
-    Install, uninstall, configuration, and operating instructions.
-    Files list.
-    Credit, acknowledgments, contact information, and copyright.
-    Known bugs and a change log.
--->
 
 ## Intro
 
@@ -34,13 +26,8 @@ A árvore de busca suporta várias operações como busca, mínimo, máximo, pre
 
 #### Opcionais/Extras
 
-- [ ] percurso em ordem
-- [ ] percurso em pós ordem
-- [ ] percurso em pré ordem
 - [x] mínimo
 - [x] máximo
-- [ ] predecessor
-- [ ] sucessor
 
 ## Requisitos
 
@@ -54,13 +41,7 @@ Atualize a lista do seu gerenciador de pacotes com a versão mais recente do g++
 
 `$ sudo apt-get install g++`
 
-#### No Fedora
-
-`$ sudo dnf update`
-
-`$ sudo dnf install gcc-c++`
-
-## Intruções de compilação
+## Intruções de Compilação
 
 Para compilar o programa basta digitar `make` no terminal dentro do diretório do projeto.
 Outros alvos do makefile:
@@ -77,7 +58,11 @@ Compila os arquivos com opção de depuração.
 
 Apaga os arquivos objetos gerados, o executável e a documentação.
 
-## Uso
+#### `make test`:
+
+Compila o arquivo com os casos de teste da classe.
+
+## Instruções de Uso
 
 A compilação irá gerar um arquivo executável na pasta `./bin` com o nome `ABB` (maiúsculo). A instrução de execução é (caso esteja na pasta principal do projeto):
 
@@ -89,9 +74,8 @@ Onde:
 
 - `<arquivo_instrucoes>` deve conter umq sequência de operações (uma operação por linha) a serem realizadas na árvore.
 
-Lista de Instruções:
+Na pasta `./data` existem dois arquivos de exemplo, um para a construção da árvore e outro com os exemplos de comandos.
 
-`@TODO`
 
 ## Autores
 | [<img src="https://avatars1.githubusercontent.com/u/29136918?s=460&v=4" width="100" style="border-radius:50%"/>](https://github.com/gleydvan) | 
