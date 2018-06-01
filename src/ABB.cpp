@@ -193,6 +193,10 @@ bool ABB::remove(Node* node, const DataType target) {
                 return true;
             }
             Node* smallest = minimum(node->right);
+            if (smallest->right != nullptr) {
+                atualizaParent(smallest, smallest->right);
+                smallest->right->parent = smallest->parent;
+            }
             substituir(node, smallest);
             atualizaParent(smallest, nullptr);
             atualizaNivelENodes(smallest);

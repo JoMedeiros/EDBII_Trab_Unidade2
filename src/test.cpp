@@ -173,6 +173,24 @@ int main(int argc, char const* argv[]) {
         assert(rootData == 9);
         std::cout << "Passou no remove da raiz!" << std::endl;
     }
-
+    {
+        ABB tree;
+        std::cout << "Apenas a Raiz:" << std::endl;
+        tree.insere(8);
+        std::cout << tree.toString() << std::endl;
+        std::cout << "Raiz com todos os filhos:" << std::endl;
+        tree.insere(4);
+        tree.insere(16);
+        std::cout << tree.toString() << std::endl;
+        std::cout << "Raiz com alguns netos e um bisneto:" << std::endl;
+        tree.insere(2);
+        tree.insere(6);
+        tree.insere(10);
+        tree.insere(12);
+        std::cout << tree.toString() << std::endl;
+        std::cout << "Apagar a raiz:" << std::endl;
+        tree.remove(8);
+        std::cout << tree.toString() << std::endl;
+    }
     return 0;
 }
